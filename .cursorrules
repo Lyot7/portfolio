@@ -1,0 +1,251 @@
+# Portfolio Project - Cursor Rules
+
+## Project Overview
+This is a modern portfolio website built with clean architecture principles and best practices.
+
+## Technology Stack
+- **Frontend**: Next.js 14+ with TypeScript
+- **Styling**: Tailwind CSS
+- **Animations**: Framer Motion + React Bits (for pre-made beautiful components)
+- **Icons**: Lucide React
+- **UI Components**: React Bits (creative landing components, skeletons, loaders)
+- **Internationalization**: next-intl for automatic translation
+- **Deployment**: Vercel
+- **Package Manager**: pnpm (preferred for performance)
+
+## Architecture Principles
+
+### Clean Architecture
+- Separate concerns into distinct layers
+- Follow the dependency rule (dependencies point inward)
+- Keep business logic independent of frameworks
+- Use dependency injection where appropriate
+
+### Folder Structure
+```
+src/
+├── app/                    # Next.js app router with i18n
+│   ├── [locale]/          # Internationalization routes
+│   │   ├── page.tsx       # Accueil (Home)
+│   │   ├── projets/       # Projects page
+│   │   ├── parcours/      # Journey/Experience page
+│   │   └── contact/       # Contact page
+├── components/             # Reusable UI components
+│   ├── ui/                # Base UI components + React Bits components
+│   ├── layout/            # Layout components (header, footer, nav)
+│   ├── sections/          # Page sections (hero, about, projects, etc.)
+│   ├── skeletons/         # Loading skeletons (React Bits)
+│   └── loaders/           # Loading components (React Bits)
+├── lib/                   # Utility functions and configurations
+├── hooks/                 # Custom React hooks
+├── types/                 # TypeScript type definitions
+├── data/                  # Static data and constants
+├── styles/                # Global styles and Tailwind config
+├── locales/               # Translation files (fr, en, etc.)
+└── assets/                # Images, icons, and other static assets
+```
+
+### Component Guidelines
+- Use functional components with TypeScript
+- Implement proper prop types and interfaces
+- Follow the single responsibility principle
+- Use composition over inheritance
+- Prefer named exports over default exports for components
+- Leverage React Bits components for creative and beautiful UI elements
+- Always implement loading states with React Bits skeletons and loaders
+- Ensure smooth page transitions with Next.js and React Bits animations
+
+### File Naming Conventions
+- Components: PascalCase (e.g., `HeroSection.tsx`)
+- Hooks: camelCase with "use" prefix (e.g., `useScrollAnimation.ts`)
+- Utilities: camelCase (e.g., `formatDate.ts`)
+- Types: PascalCase (e.g., `ProjectData.ts`)
+- Constants: UPPER_SNAKE_CASE (e.g., `API_ENDPOINTS.ts`)
+
+## Code Quality Standards
+
+### TypeScript
+- Enable strict mode
+- Use proper type annotations
+- Avoid `any` type unless absolutely necessary
+- Prefer interfaces over types for object shapes
+- Use utility types when appropriate (Partial, Pick, Omit, etc.)
+
+### React Best Practices
+- Use React.memo() for performance optimization when needed
+- Implement proper error boundaries
+- Use proper key props in lists
+- Avoid unnecessary re-renders
+- Use useCallback and useMemo judiciously
+
+### Styling Guidelines
+- Use Tailwind CSS utility classes
+- Create custom components for repeated patterns
+- Follow mobile-first responsive design
+- Maintain consistent spacing using Tailwind's scale
+- Use CSS variables for theme customization
+
+### Performance
+- Optimize images (use Next.js Image component)
+- Implement lazy loading for below-the-fold content
+- Minimize bundle size
+- Use proper caching strategies
+- Implement proper SEO practices
+- Use React Bits skeletons for instant loading feedback
+- Implement page-level loading states and transitions
+- Leverage Next.js static generation for better performance
+- Use React.Suspense with React Bits loaders for code splitting
+
+## Code Organization Rules
+
+### No Duplication
+- Extract common logic into utilities or hooks
+- Create reusable components for repeated UI patterns
+- Use constants for repeated values
+- Implement shared types for common data structures
+
+### Import Organization
+```typescript
+// 1. React and Next.js imports
+import React from 'react'
+import { NextPage } from 'next'
+
+// 2. Third-party libraries
+import { motion } from 'framer-motion'
+import { ChevronDown } from 'lucide-react'
+
+// 3. Internal imports (absolute paths preferred)
+import { Button } from '@/components/ui/Button'
+import { useScrollAnimation } from '@/hooks/useScrollAnimation'
+import { ProjectData } from '@/types/Project'
+
+// 4. Relative imports (only for closely related files)
+import './styles.css'
+```
+
+### Error Handling
+- Implement proper error boundaries
+- Use try-catch blocks for async operations
+- Provide meaningful error messages
+- Log errors appropriately for debugging
+
+## Git Workflow
+- Use conventional commit messages
+- Create feature branches for development
+- Write descriptive commit messages
+- Keep commits atomic and focused
+
+## Accessibility (a11y)
+- Use semantic HTML elements
+- Implement proper ARIA labels
+- Ensure keyboard navigation works
+- Maintain proper color contrast ratios
+- Test with screen readers
+
+## Security
+- Sanitize user inputs
+- Use environment variables for sensitive data
+- Implement proper CSP headers
+- Follow OWASP guidelines
+
+## Testing Strategy
+- Write unit tests for utilities and hooks
+- Implement integration tests for critical flows
+- Use React Testing Library for component tests
+- Maintain good test coverage
+
+## Development Workflow
+1. Plan the feature/component architecture
+2. Create types and interfaces first
+3. Implement the component/feature
+4. Add proper styling with Tailwind
+5. Test functionality and responsiveness
+6. Optimize for performance
+7. Add documentation if needed
+
+## Documentation
+- Use JSDoc comments for complex functions
+- Document component props with TypeScript interfaces
+- Maintain README for setup instructions
+- Document any custom configurations
+
+## Prohibited Practices
+- No inline styles (use Tailwind classes)
+- No console.log in production code
+- No unused imports or variables
+- No magic numbers (use named constants)
+- No deep nesting (max 3-4 levels)
+- No large components (split into smaller ones)
+
+## macOS Development Notes
+- Use absolute paths consistently
+- Configure proper file permissions
+- Use Homebrew for package management
+- Set up proper environment variables
+- Configure Git with proper credentials
+
+## Performance Targets
+- First Contentful Paint: < 1.5s
+- Largest Contentful Paint: < 2.5s
+- Cumulative Layout Shift: < 0.1
+- Time to Interactive: < 3s
+- Bundle size: < 250KB gzipped
+
+## Portfolio-Specific Requirements
+
+### Pages Structure
+1. **Accueil (Home)** - Creative landing page with React Bits hero components
+2. **Projets (Projects)** - Showcase portfolio projects with interactive elements
+3. **Parcours (Journey)** - Professional experience and education timeline
+4. **Contact** - Contact form with React Bits form components
+
+### Creative Landing Page Guidelines
+- Use React Bits hero sections and creative components
+- Implement eye-catching animations and micro-interactions
+- Ensure mobile-first responsive design
+- Include compelling call-to-action elements
+- Use React Bits gradient backgrounds and visual effects
+
+### User Experience (UX) Priorities
+- **Loading States**: Every page transition must have React Bits loaders
+- **Skeleton Screens**: Use React Bits skeletons for content loading
+- **Smooth Navigation**: Implement seamless page transitions
+- **Progressive Loading**: Load critical content first, then enhance
+- **Error Boundaries**: Graceful error handling with React Bits error components
+
+### Internationalization (i18n) Requirements
+- **Auto-detection**: Detect user's country/language automatically
+- **Supported Languages**: French (primary) and English (secondary)
+- **Fallback**: Default to French if detection fails
+- **SEO**: Proper hreflang tags for international SEO
+- **URL Structure**: /fr/ and /en/ routes for all pages
+- **Translation Keys**: Organized by page and component
+
+### React Bits Integration Strategy
+- **Components**: Leverage pre-built React Bits components for speed
+- **Animations**: Use React Bits animations over custom Framer Motion when possible
+- **Consistency**: Maintain visual consistency with React Bits design system
+- **Customization**: Extend React Bits components with Tailwind when needed
+- **Performance**: Prefer React Bits optimized components for better performance
+
+### Navigation Structure
+```
+Navigation:
+├── Accueil (/)
+├── Projets (/projets)
+├── Parcours (/parcours)
+└── Contact (/contact)
+
+Language Switching:
+├── 🇫🇷 Français
+└── 🇬🇧 English
+```
+
+### Content Loading Strategy
+1. **Critical Path**: Load navigation and hero section first
+2. **Progressive Enhancement**: Add animations and interactive elements
+3. **Below Fold**: Lazy load non-critical content with React Bits loaders
+4. **Images**: Use Next.js Image with React Bits placeholder components
+5. **Fonts**: Preload critical fonts, fallback gracefully
+
+Remember: Always check for existing implementations before creating new ones. Maintain consistency across the codebase and follow these established patterns. Prioritize user experience with React Bits components for a polished, professional portfolio.
