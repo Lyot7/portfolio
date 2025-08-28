@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { DarkVeilBackground } from '@/components/layout/DarkVeilBackground'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { ButtonShowcase } from '@/components/examples/ButtonShowcase'
 import { useTheme } from '@/contexts/ThemeContext'
 
 export default function DemoPage() {
@@ -134,24 +135,31 @@ export default function DemoPage() {
       
       {/* Content */}
       <div className="relative z-10 flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-6xl font-bold mb-4 dark:text-white text-gray-900">
-            DarkVeil Background
-          </h1>
-          <p className="text-xl dark:text-gray-300 text-gray-700 max-w-2xl mx-auto">
-            Un composant de background animé inspiré de React Bits, 
-            entièrement responsive et adaptatif aux thèmes light/dark.
-          </p>
-          <div className="mt-8 space-x-4">
-            <span className="inline-block bg-green-500/20 text-green-300 px-4 py-2 rounded-full">
-              ✅ Tests Jest: 10/10
-            </span>
-            <span className="inline-block bg-blue-500/20 text-blue-300 px-4 py-2 rounded-full">
-              ✅ Tests E2E: 10/10
-            </span>
-            <span className="inline-block bg-purple-500/20 text-purple-300 px-4 py-2 rounded-full">
-              ✅ Responsive
-            </span>
+        <div className="text-center space-y-8">
+          <div>
+            <h1 className="text-6xl font-bold mb-4 dark:text-white text-gray-900">
+              DarkVeil Background
+            </h1>
+            <p className="text-xl dark:text-gray-300 text-gray-700 max-w-2xl mx-auto">
+              Un composant de background animé inspiré de React Bits, 
+              entièrement responsive et adaptatif aux thèmes light/dark.
+            </p>
+            <div className="mt-8 space-x-4">
+              <span className="inline-block bg-green-500/20 text-green-300 px-4 py-2 rounded-full">
+                ✅ Tests Jest: 10/10
+              </span>
+              <span className="inline-block bg-blue-500/20 text-blue-300 px-4 py-2 rounded-full">
+                ✅ Tests E2E: 10/10
+              </span>
+              <span className="inline-block bg-purple-500/20 text-purple-300 px-4 py-2 rounded-full">
+                ✅ Responsive
+              </span>
+            </div>
+          </div>
+
+          {/* Button Showcase */}
+          <div className="mt-12">
+            <ButtonShowcase />
           </div>
         </div>
       </div>
