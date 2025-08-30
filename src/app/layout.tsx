@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { GlobalLayout } from "@/components/layout";
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -16,7 +17,9 @@ export default function RootLayout({
     <html lang="fr">
       <body className="antialiased">
         <ThemeProvider>
-          {children}
+          <GlobalLayout>
+            {children}
+          </GlobalLayout>
         </ThemeProvider>
       </body>
     </html>

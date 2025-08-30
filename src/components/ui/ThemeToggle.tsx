@@ -1,16 +1,15 @@
 "use client";
 
 import { Sun, Moon } from 'lucide-react';
-import { useTheme, useMounted } from '@/contexts/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
-  const mounted = useMounted();
+  const { theme, toggleTheme, mounted } = useTheme();
 
   // Prevent hydration mismatch by not rendering until mounted
   if (!mounted) {
     return (
-      <div className="fixed top-4 right-4 z-50 p-3 rounded-full w-11 h-11 bg-muted/50 border animate-pulse" />
+      <div className="relative p-3 rounded-lg w-11 h-11 bg-muted/50 border animate-pulse" />
     );
   }
 
@@ -18,7 +17,7 @@ export function ThemeToggle() {
     <button
       onClick={toggleTheme}
       className="
-        fixed top-4 right-4 z-50 p-3 rounded-lg
+        relative p-3 rounded-lg
         bg-card/80 backdrop-blur-md border border-border
         text-foreground hover:bg-card hover:text-primary
         transition-all duration-300 ease-in-out
