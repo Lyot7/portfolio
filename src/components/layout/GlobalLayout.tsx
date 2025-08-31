@@ -31,22 +31,24 @@ export function GlobalLayout({ children }: GlobalLayoutProps) {
       <DarkVeilBackground />
       <div className="absolute inset-0 bg-overlay-fixed"></div>
       
-      {/* ClickSpark global pour toute l'application (header inclus) */}
-      <ClickSpark
-        sparkColor={sparkColor}        // Adaptatif selon thème
-        sparkSize={10}                 // Taille des sparks
-        sparkRadius={15}               // Rayon d'expansion  
-        sparkCount={8}                 // Nombre de sparks
-        duration={400}                 // Durée en ms
-      >
-        {/* Navbar global avec navigation - maintenant à l'intérieur de ClickSpark */}
-        <Navbar />
-        
-        {/* Contenu des pages */}
-        <div className="relative z-10">
-          {children}
-        </div>
-      </ClickSpark>
+      {/* Navbar global avec navigation */}
+      <Navbar />
+      
+      {/* Contenu des pages */}
+      <div className="relative z-10">
+        {children}
+      </div>
+      
+      {/* ClickSpark global pour toute l'application */}
+      <div className="fixed inset-0 z-[9999] pointer-events-none">
+        <ClickSpark
+          sparkColor={sparkColor}        // Adaptatif selon thème
+          sparkSize={10}                 // Taille des sparks
+          sparkRadius={15}               // Rayon d'expansion  
+          sparkCount={8}                 // Nombre de sparks
+          duration={400}                 // Durée en ms
+        />
+      </div>
     </div>
   );
 }

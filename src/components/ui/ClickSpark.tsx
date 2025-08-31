@@ -115,38 +115,48 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
     }
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
 
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
 
-    // Créer nouveaux sparks
-    const newSparks: Spark[] = Array.from({ length: sparkCount }, (_, i) => ({
-      x,
-      y,
-      angle: (2 * Math.PI * i) / sparkCount,
-      startTime: performance.now(),
-    }));
+  // Event listener global pour capturer les clics sans bloquer
+  useEffect(() => {
+    const handleGlobalClick = (e: MouseEvent) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
 
-    sparksRef.current.push(...newSparks);
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-    // Démarrer animation si pas déjà en cours
-    if (!animationRef.current) {
-      animationRef.current = requestAnimationFrame(animate);
-    }
-  };
+      // Créer nouveaux sparks
+      const newSparks: Spark[] = Array.from({ length: sparkCount }, (_, i) => ({
+        x,
+        y,
+        angle: (2 * Math.PI * i) / sparkCount,
+        startTime: performance.now(),
+      }));
+
+      sparksRef.current.push(...newSparks);
+
+      // Démarrer animation si pas déjà en cours
+      if (!animationRef.current) {
+        animationRef.current = requestAnimationFrame(animate);
+      }
+    };
+
+    // Utiliser mousedown au lieu de click pour éviter les conflits
+    document.addEventListener('mousedown', handleGlobalClick);
+    return () => {
+      document.removeEventListener('mousedown', handleGlobalClick);
+    };
+  }, [sparkCount]);
 
   return (
-    <div className="relative w-full h-full" onClick={handleClick}>
+    <div className="relative w-full h-full">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 pointer-events-none z-50"
         style={{ zIndex: 50 }}
       />
-      {children}
     </div>
   );
 };

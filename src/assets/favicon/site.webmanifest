@@ -1,21 +1,28 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "LY0T - Développeur Web Full Stack",
+  "short_name": "LY0T",
+  "description": "Portfolio de LY0T, développeur web full stack spécialisé dans la création de sites et applications web modernes",
+  "start_url": "/",
+  "scope": "/",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
     },
     {
       "src": "/web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
     }
   ],
-  "theme_color": "#ffffff",
+  "theme_color": "#2eb352",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "categories": ["technology", "business", "productivity"],
+  "lang": "fr",
+  "dir": "ltr"
 }

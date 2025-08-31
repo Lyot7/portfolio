@@ -71,7 +71,7 @@ export function HeroSection() {
             </div>
             <div className="flex items-center gap-2 bg-card/40 backdrop-blur-sm border border-border/30 rounded-full px-4 py-2">
               <div className="w-2 h-2 bg-primary rounded-full"></div>
-              <span className="text-foreground text-sm font-medium">Expérimenté en UI/UX</span>
+              <span className="text-foreground text-sm font-medium">Expérimenté en conception d'interfaces intuitives</span>
             </div>
           </div>
 

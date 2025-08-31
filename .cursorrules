@@ -4,7 +4,7 @@
 This is a modern portfolio website built with clean architecture principles and best practices.
 
 ## Technology Stack
-- **Frontend**: Next.js 14+ with TypeScript
+- **Frontend**: Next.js 15+ with TypeScript
 - **Styling**: Tailwind CSS
 - **Animations**: Framer Motion + React Bits (for pre-made beautiful components)
 - **Icons**: Lucide React
