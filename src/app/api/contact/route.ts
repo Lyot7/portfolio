@@ -5,6 +5,9 @@ export async function POST(request: NextRequest) {
   try {
     const { firstName, lastName, email, phone, subject, message, to } = await request.json();
 
+    // Adresse email par défaut si 'to' n'est pas fourni
+    const recipientEmail = to || process.env.DEFAULT_EMAIL || 'eliott.bouquerel@gmail.com';
+
     // Fonction pour formater le numéro de téléphone français
     const formatFrenchPhone = (phoneNumber: string): string => {
       // Nettoyer le numéro (supprimer espaces, tirets, points, +33)
@@ -30,9 +33,9 @@ export async function POST(request: NextRequest) {
     };
 
     // Validation des données
-    if (!firstName || !lastName || !subject || !message || !to) {
+    if (!firstName || !lastName || !subject || !message) {
       return NextResponse.json(
-        { error: 'Les champs prénom, nom, sujet et message sont requis' },
+        { message: 'Les champs prénom, nom, sujet et message sont requis' },
         { status: 400 }
       );
     }
@@ -40,7 +43,7 @@ export async function POST(request: NextRequest) {
     // Au moins un contact requis
     if (!email && !phone) {
       return NextResponse.json(
-        { error: 'Veuillez fournir au moins un email ou un numéro de téléphone' },
+        { message: 'Veuillez fournir au moins un email ou un numéro de téléphone' },
         { status: 400 }
       );
     }
@@ -50,33 +53,33 @@ export async function POST(request: NextRequest) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         return NextResponse.json(
-          { error: 'Format d\'email invalide' },
+          { message: 'Format d\'email invalide' },
           { status: 400 }
         );
       }
     }
 
-               // Validation du téléphone si fourni
-           if (phone) {
-             // Nettoyer le numéro (supprimer espaces, tirets, points)
-             const cleanPhone = phone.replace(/[\s\-\.]/g, '');
-             
-             // Validation basique : au moins 6 chiffres, pas plus de 15 (avec code pays)
-             if (cleanPhone.length < 6 || cleanPhone.length > 15) {
-               return NextResponse.json(
-                 { error: 'Format de téléphone invalide (longueur incorrecte)' },
-                 { status: 400 }
-               );
-             }
-             
-             // Vérifier que c'est bien un numéro de téléphone (que des chiffres et +)
-             if (!/^\+?[\d]+$/.test(cleanPhone)) {
-               return NextResponse.json(
-                 { error: 'Format de téléphone invalide (caractères non autorisés)' },
-                 { status: 400 }
-               );
-             }
-           }
+    // Validation du téléphone si fourni
+    if (phone) {
+      // Nettoyer le numéro (supprimer espaces, tirets, points)
+      const cleanPhone = phone.replace(/[\s\-\.]/g, '');
+      
+      // Validation basique : au moins 6 chiffres, pas plus de 15 (avec code pays)
+      if (cleanPhone.length < 6 || cleanPhone.length > 15) {
+        return NextResponse.json(
+          { message: 'Format de téléphone invalide (longueur incorrecte)' },
+          { status: 400 }
+        );
+      }
+      
+      // Vérifier que c'est bien un numéro de téléphone (que des chiffres et +)
+      if (!/^\+?[\d]+$/.test(cleanPhone)) {
+        return NextResponse.json(
+          { message: 'Format de téléphone invalide (caractères non autorisés)' },
+          { status: 400 }
+        );
+      }
+    }
 
     // Configuration du transporteur email
     // Note: Vous devrez configurer vos variables d'environnement
@@ -91,7 +94,7 @@ export async function POST(request: NextRequest) {
     // Configuration de l'email
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: to,
+      to: recipientEmail,
       subject: subject,
       html: `
         <!DOCTYPE html>

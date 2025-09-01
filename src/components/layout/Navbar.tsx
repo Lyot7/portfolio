@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Logo } from '@/components/ui/Logo';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { cn } from '@/lib/utils';
@@ -99,8 +100,8 @@ function MobileMenu({ navItems, currentPath }: { navItems: Array<{name: string, 
         onClick={() => setIsOpen(!isOpen)}
         className="
           relative p-3 rounded-lg
-          bg-card/80 backdrop-blur-md border border-border
-          text-foreground hover:bg-card hover:text-primary
+          bg-background border border-border
+          text-foreground hover:bg-muted hover:text-primary
           transition-all duration-300 ease-in-out
           hover:scale-110 active:scale-95 
           shadow-lg hover:shadow-xl
@@ -134,35 +135,48 @@ function MobileMenu({ navItems, currentPath }: { navItems: Array<{name: string, 
       </button>
       
       {/* Dropdown menu mobile */}
-      {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-48 bg-card/50 backdrop-blur-md border border-border/50 rounded-xl shadow-lg z-50 animate-in slide-in-from-top duration-200">
-          <div className="py-2">
-            {navItems.map((item) => {
-              const isActive = currentPath === item.href;
-              
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className={cn(
-                    "block px-4 py-3 text-xs font-semibold tracking-wider uppercase transition-colors",
-                    "hover:bg-muted/50 focus-visible:outline-none focus-visible:bg-muted/50",
-                    isActive 
-                      ? "text-primary bg-primary/10" 
-                      : "text-foreground"
-                  )}
-                >
-                  {item.name}
-                  {isActive && (
-                    <div className="w-1 h-1 bg-primary rounded-full ml-2 inline-block" />
-                  )}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      <AnimatePresence mode="wait">
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ 
+              duration: 0.2, 
+              ease: "easeOut",
+              opacity: { duration: 0.15 }
+            }}
+            className="absolute top-full right-0 mt-2 w-48 bg-background border border-border rounded-xl shadow-xl z-50"
+          >
+            <div className="py-2">
+              {navItems.map((item) => {
+                const isActive = currentPath === item.href;
+                
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                      "block px-4 py-3 text-xs font-semibold tracking-wider uppercase transition-all duration-200",
+                      "hover:bg-muted focus-visible:outline-none focus-visible:bg-muted",
+                      "transform hover:translate-x-1",
+                      isActive 
+                        ? "text-primary bg-primary/10" 
+                        : "text-foreground"
+                    )}
+                  >
+                    {item.name}
+                    {isActive && (
+                      <div className="w-1 h-1 bg-primary rounded-full ml-2 inline-block" />
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

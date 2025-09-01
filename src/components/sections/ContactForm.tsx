@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Phone, Linkedin, CheckCircle, AlertCircle, ChevronDown, Check } from 'lucide-react';
+import { Mail, Phone, Linkedin, CheckCircle, ChevronDown, Check } from 'lucide-react';
 
 // Liste des pays avec codes téléphoniques
 const countries = [
@@ -385,10 +385,20 @@ export function ContactForm() {
   }, [currentStep]);
 
   const handleSubmit = async () => {
-    if (status.type === 'loading') return;
+    console.log('🚀 Tentative d\'envoi du formulaire...');
+    console.log('📤 Statut de chargement actuel:', status.type);
     
-    if (!validateStep(3)) return;
+    if (status.type === 'loading') {
+      console.log('❌ Envoi bloqué - Chargement en cours');
+      return;
+    }
     
+    if (!validateStep(3)) {
+      console.log('❌ Validation de l\'étape 3 échouée');
+      return;
+    }
+    
+    console.log('✅ Validation réussie, envoi en cours...');
     setStatus({ type: 'loading', message: 'Envoi en cours...' });
     
     try {
@@ -407,12 +417,13 @@ export function ContactForm() {
           phone: fullPhone,
           subject: formData.subject,
           message: formData.message,
-          to: 'eliott.bouquerel@gmail.com'
         }),
       });
 
       if (response.ok) {
+        console.log('✅ Envoi réussi !');
         setStatus({ type: 'success', message: 'Message envoyé avec succès !' });
+        
         // Reset form
         setFormData({
           firstName: '',
@@ -427,10 +438,12 @@ export function ContactForm() {
         setFieldErrors({});
       } else {
         const errorData = await response.json();
-        setStatus({ type: 'error', message: errorData.error || 'Erreur lors de l\'envoi' });
+        console.log('❌ Erreur de réponse:', errorData);
+        setStatus({ type: 'error', message: errorData.message || 'Erreur lors de l\'envoi du message' });
       }
     } catch (error) {
-      setStatus({ type: 'error', message: 'Erreur de connexion' });
+      console.error('❌ Erreur lors de l\'envoi:', error);
+      setStatus({ type: 'error', message: 'Erreur de connexion. Veuillez réessayer.' });
     }
   };
 
@@ -501,375 +514,380 @@ export function ContactForm() {
           </div>
 
           {/* Formulaire */}
-          <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 shadow-lg overflow-visible">
+          <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 shadow-lg overflow-visible w-full max-w-md mx-auto">
             {/* Titre du formulaire */}
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-foreground mb-2">
-                Formulaire de contact par mail
-              </h2>
-            </div>
+            {status.type !== 'success' && (
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-foreground mb-2">
+                  Formulaire de contact par mail
+                </h2>
+              </div>
+            )}
 
             {/* Stepper */}
-            <div className="flex items-center justify-center mb-8">
-              <div className="flex items-center space-x-3 sm:space-x-6">
-                {[1, 2, 3].map((step) => (
-                  <div key={step} className="flex items-center">
-                    <motion.div
-                      className={`relative w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold transition-all duration-500 ${
-                        currentStep >= step 
-                          ? 'bg-gradient-to-br from-primary to-primary/80 text-white shadow-lg shadow-primary/25' 
-                          : 'bg-background/50 border-2 border-border text-muted-foreground'
-                      }`}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      {currentStep > step ? (
-                        <Check className="w-5 h-5" />
-                      ) : (
-                        step
-                      )}
-                      {currentStep > step && (
-                        <motion.div
-                          className="absolute inset-0 rounded-full bg-primary/20"
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ duration: 0.3 }}
-                        />
-                      )}
-                    </motion.div>
-                    {step < 3 && (
-                      <div className="mx-3 sm:mx-6">
-                        <motion.div
-                          className={`w-16 sm:w-24 h-1 rounded-full ${
-                            currentStep > step 
-                              ? 'bg-gradient-to-r from-primary to-primary/60 shadow-sm shadow-primary/25' 
-                              : 'bg-border/50'
-                          }`}
-                          initial={{ width: 0 }}
-                          animate={{ width: currentStep > step ? '100%' : '0%' }}
-                          transition={{ duration: 0.5, delay: 0.2 }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Contenu des étapes - Hauteur adaptative sans gaps */}
-            <motion.div 
-              className="relative"
-              layout
-              transition={{ 
-                duration: 0.3, 
-                ease: "easeInOut",
-                layout: { duration: 0.3, ease: "easeInOut" }
-              }}
-            >
-              <AnimatePresence mode="wait">
-                {currentStep === 1 && (
-                  <motion.div
-                    key="step-1"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="w-full px-4"
-                    layout
-                  >
-                    <div className="space-y-4">
-                      <h3 className="text-xl font-semibold text-foreground">Informations personnelles</h3>
-                      <div className="space-y-4">
-                        <div>
-                          <label htmlFor="firstName" className="block text-sm font-medium text-foreground mb-2">
-                            Prénom *
-                          </label>
-                          <input
-                            ref={firstNameRef}
-                            type="text"
-                            id="firstName"
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-3 bg-background/50 border border-border/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                            placeholder="Votre prénom"
-                            required
+            {status.type !== 'success' && (
+              <div className="flex items-center justify-center mb-8 w-full">
+                <div className="flex items-center space-x-3 sm:space-x-6 w-full max-w-xs">
+                  {[1, 2, 3].map((step) => (
+                    <div key={step} className="flex items-center flex-1">
+                      <motion.div
+                        className={`relative w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold transition-all duration-500 ${
+                          currentStep >= step 
+                            ? 'bg-gradient-to-br from-primary to-primary/80 text-white shadow-lg shadow-primary/25' 
+                            : 'bg-background/50 border-2 border-border text-muted-foreground'
+                        }`}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        {currentStep > step ? (
+                          <Check className="w-5 h-5" />
+                        ) : (
+                          step
+                        )}
+                        {currentStep > step && (
+                          <motion.div
+                            className="absolute inset-0 rounded-full bg-primary/20"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ duration: 0.3 }}
                           />
-                        </div>
-
-                        <div>
-                          <label htmlFor="lastName" className="block text-sm font-medium text-foreground mb-2">
-                            Nom *
-                          </label>
-                          <input
-                            type="text"
-                            id="lastName"
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-3 bg-background/50 border border-border/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                            placeholder="Votre nom"
-                            required
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {currentStep === 2 && (
-                  <motion.div
-                    key="step-2"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="w-full px-4"
-                    layout
-                  >
-                    <div className="space-y-4">
-                      <h3 className="text-xl font-semibold text-foreground">Coordonnées</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Veuillez fournir au moins un email ou un numéro de téléphone pour que je puisse vous recontacter.
-                      </p>
-                      <div className="space-y-4">
-                        <div>
-                          <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                            Email
-                          </label>
-                          <input
-                            ref={emailRef}
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            className={`w-full px-4 py-3 bg-background/50 border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
-                              fieldErrors.email ? 'border-red-500' : 'border-border/50'
+                        )}
+                      </motion.div>
+                      {step < 3 && (
+                        <div className="mx-3 sm:mx-6 flex-1">
+                          <motion.div
+                            className={`w-full h-1 rounded-full ${
+                              currentStep > step 
+                                ? 'bg-gradient-to-r from-primary to-primary/60 shadow-sm shadow-primary/25' 
+                                : 'bg-border/50'
                             }`}
-                            placeholder="votre.email@exemple.com"
+                            initial={{ width: 0 }}
+                            animate={{ width: currentStep > step ? '100%' : '0%' }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
                           />
-                          {fieldErrors.email && (
-                            <p className="text-red-500 text-sm mt-1">{fieldErrors.email}</p>
-                          )}
                         </div>
-
-                        <div>
-                          <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
-                            Numéro de téléphone
-                          </label>
-                          <div className="flex">
-                            {/* Menu déroulant pays */}
-                            <div className="relative country-dropdown">
-                              <button
-                                type="button"
-                                onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
-                                className="flex items-center gap-2 px-4 py-3 bg-background/50 border border-r-0 border-border/50 rounded-l-lg text-foreground hover:bg-background/70 transition-colors h-[52px]"
-                              >
-                                <span className="text-sm font-medium">
-                                  {countries.find(c => c.code === formData.phoneCountry)?.name.split(' ')[0] || '+33'}
-                                </span>
-                                <ChevronDown className={`w-4 h-4 transition-transform ${isCountryDropdownOpen ? 'rotate-180' : ''}`} />
-                              </button>
-                              
-                              {/* Dropdown menu */}
-                              {isCountryDropdownOpen && (
-                                <motion.div
-                                  initial={{ opacity: 0, y: -10 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -10 }}
-                                  transition={{ duration: 0.2 }}
-                                  className="absolute top-full left-0 z-[100] w-64 bg-background border border-border rounded-lg shadow-lg overflow-y-auto h-[200px]"
-                                >
-                                  {countries.map((country, index) => (
-                                    <div key={index}>
-                                      {country.code === 'separator' || country.code === 'separator2' ? (
-                                        <div className="px-3 py-1 text-xs text-muted-foreground border-b border-border/50">
-                                          {country.name}
-                                        </div>
-                                      ) : (
-                                        <button
-                                          type="button"
-                                          onClick={() => handleCountryChange(country.code)}
-                                          className={`w-full px-3 py-2 text-left hover:bg-primary/10 transition-colors ${
-                                            country.priority ? 'font-semibold' : ''
-                                          } ${formData.phoneCountry === country.code ? 'bg-primary/20 text-primary' : ''}`}
-                                        >
-                                          <span className="text-sm">{country.name}</span>
-                                        </button>
-                                      )}
-                                    </div>
-                                  ))}
-                                </motion.div>
-                              )}
-                            </div>
-                            
-                            {/* Champ téléphone */}
-                            <input
-                              type="tel"
-                              id="phone"
-                              name="phone"
-                              value={formData.phone}
-                              onChange={handleInputChange}
-                              className={`flex-1 px-4 py-3 bg-background/50 border border-l-0 rounded-r-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all h-[52px] ${
-                                fieldErrors.phone ? 'border-red-500' : 'border-border/50'
-                              }`}
-                              placeholder={getPhonePlaceholder(formData.phoneCountry)}
-                            />
-                          </div>
-                          {fieldErrors.phone && (
-                            <p className="text-red-500 text-sm mt-1">{fieldErrors.phone}</p>
-                          )}
-                        </div>
-                      </div>
+                      )}
                     </div>
-                  </motion.div>
-                )}
-
-                {currentStep === 3 && (
-                  <motion.div
-                    key="step-3"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="w-full px-4"
-                    layout
-                  >
-                    <div className="space-y-4">
-                      <h3 className="text-xl font-semibold text-foreground">Votre message</h3>
-                      <div className="space-y-4">
-                        <div>
-                          <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
-                            Sujet *
-                          </label>
-                          <input
-                            ref={subjectRef}
-                            type="text"
-                            id="subject"
-                            name="subject"
-                            value={formData.subject}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-3 bg-background/50 border border-border/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                            placeholder="Sujet de votre message"
-                            required
-                          />
-                        </div>
-
-                        <div>
-                          <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
-                            Message *
-                          </label>
-                          <textarea
-                            id="message"
-                            name="message"
-                            value={formData.message}
-                            onChange={handleInputChange}
-                            rows={5}
-                            className="w-full px-4 py-3 bg-background/50 border border-border/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
-                            placeholder="Décrivez votre projet ou votre demande..."
-                            required
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-
-            {/* Boutons de navigation */}
-            <div className="mt-6 flex justify-between">
-              <div>
-                {currentStep > 1 && (
-                  <motion.button
-                    type="button"
-                    onClick={prevStep}
-                    disabled={status.type === 'loading'}
-                    className={`px-6 py-2 bg-muted text-foreground rounded-lg transition-colors ${
-                      status.type === 'loading' 
-                        ? 'opacity-50 cursor-not-allowed' 
-                        : 'hover:bg-muted/80'
-                    }`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Précédent
-                  </motion.button>
-                )}
+                  ))}
+                </div>
               </div>
-              
-              <div>
-                {currentStep < 3 ? (
-                  <motion.button
-                    type="button"
-                    onClick={nextStep}
-                    disabled={status.type === 'loading'}
-                    className={`px-6 py-2 bg-primary text-white rounded-lg transition-colors ${
-                      status.type === 'loading' 
-                        ? 'opacity-50 cursor-not-allowed' 
-                        : 'hover:bg-primary/90'
-                    }`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Suivant
-                  </motion.button>
-                ) : (
-                  <motion.button
-                    type="button"
-                    onClick={handleSubmit}
-                    disabled={status.type === 'loading'}
-                    className={`px-6 py-2 bg-primary text-white rounded-lg transition-colors ${
-                      status.type === 'loading' 
-                        ? 'opacity-50 cursor-not-allowed' 
-                        : 'hover:bg-primary/90'
-                    }`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    {status.type === 'loading' ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        Envoi en cours...
-                      </div>
-                    ) : status.type === 'success' ? (
-                      <div className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4" />
-                        Message envoyé !
-                      </div>
-                    ) : status.type === 'error' ? (
-                      <div className="flex items-center gap-2">
-                        <AlertCircle className="w-4 h-4" />
-                        Erreur
-                      </div>
-                    ) : (
-                      'Envoyer le message'
-                    )}
-                  </motion.button>
-                )}
-              </div>
-            </div>
+            )}
 
             {/* Messages de statut */}
             {status.type === 'error' && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm"
+                className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm w-full h-full flex items-center justify-center"
               >
                 {status.message}
               </motion.div>
             )}
 
-            {status.type === 'success' && (
+            {status.type === 'success' ? (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg text-green-500 text-sm"
+                className="p-4 sm:p-6 bg-gradient-to-br from-green-50 to-white border-2 border-green-200 rounded-2xl text-center shadow-lg w-full h-full flex items-center justify-center"
               >
-                {status.message}
+                <div className="flex flex-col items-center">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center mb-4 sm:mb-6 shadow-inner">
+                    <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-green-800 mb-3 sm:mb-4">
+                    Message envoyé avec succès !
+                  </h3>
+                  <p className="text-green-700 text-base sm:text-lg leading-relaxed">
+                    Votre message a été transmis. Je vous répondrai dans les plus brefs délais.
+                  </p>
+                </div>
               </motion.div>
+            ) : (
+              <>
+                {/* Contenu des étapes - Hauteur adaptative sans gaps */}
+                <motion.div 
+                  className="relative"
+                  layout
+                  transition={{ 
+                    duration: 0.3, 
+                    ease: "easeInOut",
+                    layout: { duration: 0.3, ease: "easeInOut" }
+                  }}
+                >
+                  <AnimatePresence mode="wait">
+                    {currentStep === 1 && (
+                      <motion.div
+                        key="step-1"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="w-full"
+                        layout
+                      >
+                        <div className="space-y-3 sm:space-y-4">
+                          <h3 className="text-lg sm:text-xl font-semibold text-foreground">Informations personnelles</h3>
+                          <div className="space-y-3 sm:space-y-4">
+                            <div>
+                              <label htmlFor="firstName" className="block text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
+                                Prénom *
+                              </label>
+                              <input
+                                ref={firstNameRef}
+                                type="text"
+                                id="firstName"
+                                name="firstName"
+                                value={formData.firstName}
+                                onChange={handleInputChange}
+                                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-background/50 border border-border/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm sm:text-base"
+                                placeholder="Votre prénom"
+                                required
+                              />
+                            </div>
+
+                            <div>
+                              <label htmlFor="lastName" className="block text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
+                                Nom *
+                              </label>
+                              <input
+                                type="text"
+                                id="lastName"
+                                name="lastName"
+                                value={formData.lastName}
+                                onChange={handleInputChange}
+                                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-background/50 border border-border/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm sm:text-base"
+                                placeholder="Votre nom"
+                                required
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {currentStep === 2 && (
+                      <motion.div
+                        key="step-2"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="w-full"
+                        layout
+                      >
+                        <div className="space-y-3 sm:space-y-4">
+                          <h3 className="text-lg sm:text-xl font-semibold text-foreground">Coordonnées</h3>
+                          <p className="text-xs sm:text-sm text-muted-foreground">
+                            Veuillez fournir au moins un email ou un numéro de téléphone pour que je puisse vous recontacter.
+                          </p>
+                          <div className="space-y-3 sm:space-y-4">
+                            <div>
+                              <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
+                                Email
+                              </label>
+                              <input
+                                ref={emailRef}
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-background/50 border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm sm:text-base ${
+                                  fieldErrors.email ? 'border-red-500' : 'border-border/50'
+                                }`}
+                                placeholder="votre.email@exemple.com"
+                              />
+                              {fieldErrors.email && (
+                                <p className="text-red-500 text-xs sm:text-sm mt-1">{fieldErrors.email}</p>
+                              )}
+                            </div>
+
+                            <div>
+                              <label htmlFor="phone" className="block text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
+                                Numéro de téléphone
+                              </label>
+                              <div className="flex">
+                                {/* Menu déroulant pays */}
+                                <div className="relative country-dropdown">
+                                  <button
+                                    type="button"
+                                    onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
+                                    className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-background/50 border border-r-0 border-border/50 rounded-l-lg text-foreground hover:bg-background/70 transition-colors h-[44px] sm:h-[52px] text-sm sm:text-base`}
+                                  >
+                                    <span className="text-xs sm:text-sm font-medium">
+                                      {countries.find(c => c.code === formData.phoneCountry)?.name.split(' ')[0] || '+33'}
+                                    </span>
+                                    <ChevronDown className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform ${isCountryDropdownOpen ? 'rotate-180' : ''}`} />
+                                  </button>
+                                  
+                                  {/* Dropdown menu */}
+                                  {isCountryDropdownOpen && (
+                                    <motion.div
+                                      initial={{ opacity: 0, y: -10 }}
+                                      animate={{ opacity: 1, y: 0 }}
+                                      exit={{ opacity: 0, y: -10 }}
+                                      transition={{ duration: 0.2 }}
+                                      className="absolute top-full left-0 z-[100] w-48 sm:w-64 bg-background border border-border rounded-lg shadow-lg overflow-y-auto h-[160px] sm:h-[200px]"
+                                    >
+                                      {countries.map((country, index) => (
+                                        <div key={index}>
+                                          {country.code === 'separator' || country.code === 'separator2' ? (
+                                            <div className="px-2 sm:px-3 py-1 text-xs text-muted-foreground border-b border-border/50">
+                                              {country.name}
+                                            </div>
+                                          ) : (
+                                            <button
+                                              type="button"
+                                              onClick={() => handleCountryChange(country.code)}
+                                              className={`w-full px-2 sm:px-3 py-1.5 sm:py-2 text-left hover:bg-primary/10 transition-colors ${
+                                                country.priority ? 'font-semibold' : ''
+                                              } ${formData.phoneCountry === country.code ? 'bg-primary/20 text-primary' : ''}`}
+                                            >
+                                              <span className="text-xs sm:text-sm">{country.name}</span>
+                                            </button>
+                                          )}
+                                        </div>
+                                      ))}
+                                    </motion.div>
+                                  )}
+                                </div>
+                                
+                                {/* Champ téléphone */}
+                                <input
+                                  type="tel"
+                                  id="phone"
+                                  name="phone"
+                                  value={formData.phone}
+                                  onChange={handleInputChange}
+                                  className={`flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-background/50 border border-l-0 rounded-r-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all h-[44px] sm:h-[52px] text-sm sm:text-base ${
+                                    fieldErrors.phone ? 'border-red-500' : 'border-border/50'
+                                  }`}
+                                  placeholder={getPhonePlaceholder(formData.phoneCountry)}
+                                />
+                              </div>
+                              {fieldErrors.phone && (
+                                <p className="text-red-500 text-xs sm:text-sm mt-1">{fieldErrors.phone}</p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {currentStep === 3 && (
+                      <motion.div
+                        key="step-3"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="w-full"
+                        layout
+                      >
+                        <div className="space-y-3 sm:space-y-4">
+                          <h3 className="text-lg sm:text-xl font-semibold text-foreground">Votre message</h3>
+                          <div className="space-y-3 sm:space-y-4">
+                            <div>
+                              <label htmlFor="subject" className="block text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
+                                Sujet *
+                              </label>
+                              <input
+                                ref={subjectRef}
+                                type="text"
+                                id="subject"
+                                name="subject"
+                                value={formData.subject}
+                                onChange={handleInputChange}
+                                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-background/50 border border-border/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm sm:text-base"
+                                placeholder="Sujet de votre message"
+                                required
+                              />
+                            </div>
+
+                            <div>
+                              <label htmlFor="message" className="block text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
+                                Message *
+                              </label>
+                              <textarea
+                                id="message"
+                                name="message"
+                                value={formData.message}
+                                onChange={handleInputChange}
+                                rows={5}
+                                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-background/50 border border-border/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none text-sm sm:text-base"
+                                placeholder="Décrivez votre projet ou votre demande..."
+                                required
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+
+                {/* Boutons de navigation */}
+                <div className="mt-6 flex flex-col gap-4">
+                  {/* Bouton Suivant/Envoyer - en haut */}
+                  <div>
+                    {currentStep < 3 ? (
+                      <motion.button
+                        type="button"
+                        onClick={nextStep}
+                        className={`w-full px-6 py-2 bg-primary text-white rounded-lg transition-colors ${
+                          status.type === 'loading'
+                            ? 'opacity-50 cursor-not-allowed' 
+                            : 'hover:bg-primary/90'
+                        }`}
+                        whileHover={{ scale: status.type === 'loading' ? 1 : 1.02 }}
+                        whileTap={{ scale: status.type === 'loading' ? 1 : 0.98 }}
+                      >
+                        Suivant
+                      </motion.button>
+                    ) : (
+                      <motion.button
+                        type="button"
+                        onClick={handleSubmit}
+                        className={`w-full px-6 py-2 bg-primary text-white rounded-lg transition-colors ${
+                          status.type === 'loading'
+                            ? 'opacity-50 cursor-not-allowed' 
+                            : 'hover:bg-primary/90'
+                        }`}
+                        whileHover={{ scale: status.type === 'loading' ? 1 : 1.02 }}
+                        whileTap={{ scale: status.type === 'loading' ? 1 : 0.98 }}
+                      >
+                        {status.type === 'loading' ? (
+                          <div className="flex items-center justify-center gap-2">
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                            Envoi en cours...
+                          </div>
+                        ) : (
+                          'Envoyer le message'
+                        )}
+                      </motion.button>
+                    )}
+                  </div>
+                  
+                  {/* Bouton Précédent - en bas */}
+                  <div>
+                    {currentStep > 1 && (
+                      <motion.button
+                        type="button"
+                        onClick={prevStep}
+                        className={`w-full px-6 py-2 bg-muted text-foreground rounded-lg transition-colors ${
+                          status.type === 'loading'
+                            ? 'opacity-50 cursor-not-allowed' 
+                            : 'hover:bg-muted/80'
+                        }`}
+                        whileHover={{ scale: status.type === 'loading' ? 1 : 1.02 }}
+                        whileTap={{ scale: status.type === 'loading' ? 1 : 0.98 }}
+                      >
+                        Précédent
+                      </motion.button>
+                    )}
+                  </div>
+                </div>
+              </>
             )}
           </div>
         </div>
