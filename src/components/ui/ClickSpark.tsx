@@ -29,6 +29,7 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sparksRef = useRef<Spark[]>([]);
   const animationRef = useRef<number | null>(null);
+  const sparkColorRef = useRef<string>(sparkColor);
 
   // Redimensionner le canvas
   useEffect(() => {
@@ -61,6 +62,11 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
       }
     };
   }, []);
+
+  // Mettre à jour la couleur quand elle change
+  useEffect(() => {
+    sparkColorRef.current = sparkColor;
+  }, [sparkColor]);
 
   const animate = () => {
     const canvas = canvasRef.current;
@@ -95,7 +101,7 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
       const y2 = spark.y + (distance + lineLength) * Math.sin(spark.angle);
 
       // Draw spark line
-      ctx.strokeStyle = sparkColor;
+      ctx.strokeStyle = sparkColorRef.current;
       ctx.globalAlpha = opacity;
       ctx.lineWidth = 2;
       ctx.lineCap = 'round';
@@ -148,7 +154,7 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
     return () => {
       document.removeEventListener('mousedown', handleGlobalClick);
     };
-  }, [sparkCount]);
+  }, [sparkCount, sparkColor]);
 
   return (
     <div className="relative w-full h-full">

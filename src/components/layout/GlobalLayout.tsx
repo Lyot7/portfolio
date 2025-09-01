@@ -23,7 +23,7 @@ export function GlobalLayout({ children }: GlobalLayoutProps) {
   const { theme, mounted } = useTheme();
 
   // Couleur des sparks selon le thème
-  const sparkColor = mounted ? (theme === 'dark' ? '#ffffff' : '#000000') : '#ffffff';
+  const sparkColor = mounted ? (theme === 'light' ? '#000000' : '#ffffff') : '#ffffff';
 
   return (
     <div className="min-h-screen relative">

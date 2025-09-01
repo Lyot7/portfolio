@@ -53,7 +53,7 @@ export function HeroSection() {
           </h1>
 
                       {/* Sous-titre */}
-            <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground max-w-3xl mb-8 leading-relaxed">
+            <p className="text-lg sm:text-xl lg:text-2xl text-foreground max-w-3xl mb-8 leading-relaxed">
               Je suis à l&apos;écoute de vos besoins et je vous accompagne dans la création ou l&apos;amélioration de votre site ou application web sur mesure.
             </p>
 
@@ -71,7 +71,7 @@ export function HeroSection() {
             </div>
             <div className="flex items-center gap-2 bg-card/40 backdrop-blur-sm border border-border/30 rounded-full px-4 py-2">
               <div className="w-2 h-2 bg-primary rounded-full"></div>
-              <span className="text-foreground text-sm font-medium">Expérimenté en conception d'interfaces intuitives</span>
+              <span className="text-foreground text-sm font-medium">Expérimenté en conception d&apos;interfaces intuitives</span>
             </div>
           </div>
 
@@ -116,7 +116,7 @@ export function HeroSectionCompact() {
           </h1>
 
           {/* Sous-titre */}
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mb-8">
+          <p className="text-base sm:text-lg text-white max-w-2xl mb-8">
             Je transforme vos idées en applications web modernes, 
             performantes et accessibles.
           </p>
