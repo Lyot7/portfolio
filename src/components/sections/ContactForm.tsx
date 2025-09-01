@@ -578,7 +578,7 @@ export function ContactForm() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm w-full h-full flex items-center justify-center"
+                className="mt-4 p-3 bg-destructive/10 border border-destructive/20 rounded-lg text-destructive text-sm w-full h-full flex items-center justify-center"
               >
                 {status.message}
               </motion.div>
@@ -588,16 +588,16 @@ export function ContactForm() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="p-4 sm:p-6 bg-gradient-to-br from-green-50 to-white border-2 border-green-200 rounded-2xl text-center shadow-lg w-full h-full flex items-center justify-center"
+                className="p-4 sm:p-6 bg-card border-2 border-border rounded-2xl text-center shadow-lg w-full h-full flex items-center justify-center"
               >
                 <div className="flex flex-col items-center">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center mb-4 sm:mb-6 shadow-inner">
-                    <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary/20 rounded-full flex items-center justify-center mb-4 sm:mb-6 shadow-inner">
+                    <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-green-800 mb-3 sm:mb-4">
+                  <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
                     Message envoyé avec succès !
                   </h3>
-                  <p className="text-green-700 text-base sm:text-lg leading-relaxed">
+                  <p className="text-muted-foreground text-base sm:text-lg leading-relaxed">
                     Votre message a été transmis. Je vous répondrai dans les plus brefs délais.
                   </p>
                 </div>
