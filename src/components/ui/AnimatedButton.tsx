@@ -90,4 +90,3 @@ const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>(
 AnimatedButton.displayName = 'AnimatedButton';
 
 export { AnimatedButton };
-export type { AnimatedButtonProps };

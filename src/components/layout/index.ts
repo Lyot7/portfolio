@@ -5,6 +5,3 @@ export { Navigation } from './Navigation';
 
 // Composants de background
 export { DarkVeilBackground } from './DarkVeilBackground';
-
-// Types
-export type { NavigationItem, NavigationProps } from './Navigation';

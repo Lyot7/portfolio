@@ -3,51 +3,47 @@
 import { forwardRef, InputHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   variant?: 'default' | 'error' | 'success';
-  size?: 'sm' | 'md' | 'lg';
+  inputSize?: 'sm' | 'md' | 'lg';
 }
 
 /**
- * Input - Composant d'entrée de texte réutilisable
+ * Input - Composant de champ de saisie de base
  * 
  * Respecte le principe de responsabilité unique (SOLID)
- * Seulement responsable de l'affichage des champs de saisie
+ * Seulement responsable de l'affichage et de la saisie
  */
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ 
-    className,
-    variant = 'default',
-    size = 'md',
+    className, 
+    variant = 'default', 
+    inputSize = 'md', 
     ...props 
   }, ref) => {
-    const baseClasses = [
-      "flex w-full rounded-md border border-input bg-background",
-      "text-sm ring-offset-background",
-      "file:border-0 file:bg-transparent file:text-sm file:font-medium",
-      "placeholder:text-muted-foreground",
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-      "disabled:cursor-not-allowed disabled:opacity-50"
-    ];
-
-    const variants = {
-      default: "border-input",
-      error: "border-destructive focus-visible:ring-destructive",
-      success: "border-success focus-visible:ring-success"
+    
+    // Configuration des variantes
+    const variantClasses = {
+      default: 'border-border/50 focus:border-primary focus:ring-primary',
+      error: 'border-red-500 focus:border-red-500 focus:ring-red-500',
+      success: 'border-green-500 focus:border-green-500 focus:ring-green-500'
     };
 
-    const sizes = {
-      sm: "h-8 px-3",
-      md: "h-10 px-3 py-2",
-      lg: "h-12 px-4 py-3 text-base"
+    // Configuration des tailles
+    const sizeClasses = {
+      sm: 'h-8 px-3 text-xs',
+      md: 'h-10 px-4 py-2 text-sm',
+      lg: 'h-12 px-6 py-3 text-base'
     };
 
     return (
       <input
         className={cn(
-          baseClasses,
-          variants[variant],
-          sizes[size],
+          "w-full bg-background/50 border rounded-lg text-foreground placeholder-muted-foreground",
+          "focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all",
+          "disabled:pointer-events-none disabled:opacity-50",
+          variantClasses[variant],
+          sizeClasses[inputSize],
           className
         )}
         ref={ref}
@@ -60,4 +56,3 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 Input.displayName = 'Input';
 
 export { Input };
-export type { InputProps };
