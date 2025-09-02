@@ -388,6 +388,11 @@ Language Switching:
 - **Theme switching** (use CSS transitions instead)
 - **Navigation between pages** (use page-level loading states)
 
+### Skeleton Loading Strategy
+- **Text-containing components**: Wait for translations before displaying (Header, Navigation, HeroSection, text pages)
+- **Non-text components**: Display immediately without skeleton (Logo, Contact page, Home page)
+- **Mixed components**: Use skeleton only for text parts, display non-text parts immediately
+
 ### Skeleton Implementation Pattern
 ```typescript
 export function ComponentWithSkeleton() {
@@ -459,6 +464,12 @@ export function ComponentWithSkeleton() {
 - Include badge, title, description, stats, buttons
 - Responsive text sizes and spacing
 
+#### Page Skeletons
+- **Home Page Skeleton**: Not needed - page displays immediately (no text content)
+- **Projects Page Skeleton**: Display during translation loading, match page layout with title, subtitle, and development text
+- **About Page Skeleton**: Display during translation loading, match page layout with title, subtitle, and development text
+- **Contact Page Skeleton**: Display during translation loading, match page layout with form structure and labels
+
 #### Form Skeleton
 - Display during form validation or submission
 - Match form field layout and dimensions
@@ -467,12 +478,15 @@ export function ComponentWithSkeleton() {
 ### Skeleton File Organization
 ```
 src/components/skeletons/
-├── HeaderSkeleton.tsx      # Header loading state
-├── NavbarSkeleton.tsx      # Navbar loading state
-├── LogoSkeleton.tsx        # Logo loading state
-├── NavigationSkeleton.tsx  # Navigation loading state
-├── HeroSkeleton.tsx        # Hero section loading state
-├── FormSkeleton.tsx        # Form loading state
+├── HeaderSkeleton.tsx      # Header loading state (waits for translations)
+├── NavbarSkeleton.tsx      # Navbar loading state (waits for translations)
+├── LogoSkeleton.tsx        # Logo loading state (waits for image/typography)
+├── NavigationSkeleton.tsx  # Navigation loading state (waits for translations)
+├── HeroSkeleton.tsx        # Hero section loading state (waits for translations)
+├── ProjectsPageSkeleton.tsx # Projects page loading state (waits for translations)
+├── AboutPageSkeleton.tsx   # About page loading state (waits for translations)
+├── ContactPageSkeleton.tsx # Contact page loading state (waits for translations)
+├── FormSkeleton.tsx        # Form loading state (waits for translations)
 ├── CardSkeleton.tsx        # Generic card loading state
 └── index.ts                # Centralized exports
 ```
@@ -485,6 +499,9 @@ export { NavbarSkeleton } from './NavbarSkeleton';
 export { LogoSkeleton } from './LogoSkeleton';
 export { NavigationSkeleton } from './NavigationSkeleton';
 export { HeroSkeleton } from './HeroSkeleton';
+export { ProjectsPageSkeleton } from './ProjectsPageSkeleton';
+export { AboutPageSkeleton } from './AboutPageSkeleton';
+export { ContactPageSkeleton } from './ContactPageSkeleton';
 
 // ❌ Bad: Exporting non-existent skeletons
 export { NonExistentSkeleton } from './NonExistentSkeleton';
