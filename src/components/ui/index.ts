@@ -12,6 +12,9 @@ export { default as ClickSpark } from './ClickSpark';
 // Theme components
 export { ThemeToggle } from './ThemeToggle';
 
+// Language components
+export { LanguageSelector } from './LanguageSelector';
+
 // Export types
 export type { ButtonProps } from './Button';
 export type { ButtonPrimaryProps } from './ButtonPrimary';

@@ -6,8 +6,10 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Logo } from '@/components/ui/Logo';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { LanguageSelector } from '@/components/ui/LanguageSelector';
 import { cn } from '@/lib/utils';
 import { useScrollDirection, useIsMobile } from '@/hooks';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 /**
  * Navbar Component
@@ -21,12 +23,13 @@ export function Navbar() {
   const pathname = usePathname();
   const { scrollDirection, isAtTop } = useScrollDirection();
   const isMobile = useIsMobile();
+  const { t } = useLanguage();
 
   const navItems = [
-    { name: 'Accueil', href: '/' },
-    { name: 'Projets', href: '/projets' },
-    { name: 'Me découvrir', href: '/a-propos' },
-    { name: 'Contact', href: '/contact' },
+    { name: t('navigation.home'), href: '/' },
+    { name: t('navigation.projects'), href: '/projets' },
+    { name: t('navigation.about'), href: '/a-propos' },
+    { name: t('navigation.contact'), href: '/contact' },
   ];
 
   // Logique de visibilité selon l'appareil et le scroll
@@ -73,8 +76,13 @@ export function Navbar() {
           })}
         </div>
 
-        {/* Theme Toggle + Menu mobile (hamburger) à droite */}
+        {/* Language Selector + Theme Toggle + Menu mobile (hamburger) à droite */}
         <div className="flex items-center gap-3">
+          {/* Language Selector */}
+          <div className="flex-shrink-0">
+            <LanguageSelector />
+          </div>
+          
           {/* Theme Toggle */}
           <div className="flex-shrink-0">
             <ThemeToggle />

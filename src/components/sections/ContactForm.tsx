@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Phone, Linkedin, CheckCircle, ChevronDown, Check } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // Liste des pays avec codes téléphoniques
 const countries = [
@@ -68,6 +69,7 @@ interface FormStatus {
 }
 
 export function ContactForm() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',
@@ -399,7 +401,7 @@ export function ContactForm() {
     }
     
     console.log('✅ Validation réussie, envoi en cours...');
-    setStatus({ type: 'loading', message: 'Envoi en cours...' });
+    setStatus({ type: 'loading', message: t('common.loading') });
     
     try {
       // Préparer le numéro de téléphone avec le code pays
@@ -422,7 +424,7 @@ export function ContactForm() {
 
       if (response.ok) {
         console.log('✅ Envoi réussi !');
-        setStatus({ type: 'success', message: 'Message envoyé avec succès !' });
+        setStatus({ type: 'success', message: t('contact.success.title') });
         
         // Reset form
         setFormData({
@@ -439,11 +441,11 @@ export function ContactForm() {
       } else {
         const errorData = await response.json();
         console.log('❌ Erreur de réponse:', errorData);
-        setStatus({ type: 'error', message: errorData.message || 'Erreur lors de l\'envoi du message' });
+        setStatus({ type: 'error', message: errorData.message || t('contact.error.message') });
       }
     } catch (error) {
       console.error('❌ Erreur lors de l\'envoi:', error);
-      setStatus({ type: 'error', message: 'Erreur de connexion. Veuillez réessayer.' });
+      setStatus({ type: 'error', message: t('contact.error.message') });
     }
   };
 
@@ -455,11 +457,10 @@ export function ContactForm() {
           <div className="space-y-6">
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-                Contactez-moi
+                {t('contact.title')}
               </h1>
               <p className="text-lg text-foreground leading-relaxed">
-                Vous avez un projet en tête ? Une question ? N&apos;hésitez pas à me contacter, 
-                je serai ravi d&apos;échanger avec vous !
+                {t('contact.description')}
               </p>
             </div>
             
@@ -472,7 +473,7 @@ export function ContactForm() {
                   <Mail className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Email</p>
+                  <p className="text-sm text-muted-foreground">{t('contact.contactInfo.email')}</p>
                   <p className="text-foreground group-hover:text-primary transition-colors">
                     eliott.bouquerel@gmail.com
                   </p>
@@ -487,7 +488,7 @@ export function ContactForm() {
                   <Phone className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Téléphone</p>
+                  <p className="text-sm text-muted-foreground">{t('contact.contactInfo.phone')}</p>
                   <p className="text-foreground group-hover:text-primary transition-colors">
                     +33 6 32 21 37 11
                   </p>
@@ -504,7 +505,7 @@ export function ContactForm() {
                   <Linkedin className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">LinkedIn</p>
+                  <p className="text-sm text-muted-foreground">{t('contact.contactInfo.linkedin')}</p>
                   <p className="text-foreground group-hover:text-primary transition-colors">
                     Eliott BOUQUEREL
                   </p>
@@ -515,15 +516,6 @@ export function ContactForm() {
 
           {/* Formulaire */}
           <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 shadow-lg overflow-visible w-full max-w-md mx-auto">
-            {/* Titre du formulaire */}
-            {status.type !== 'success' && (
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-foreground mb-2">
-                  Formulaire de contact par mail
-                </h2>
-              </div>
-            )}
-
             {/* Stepper */}
             {status.type !== 'success' && (
               <div className="flex items-center justify-center mb-8 w-full">
@@ -595,10 +587,10 @@ export function ContactForm() {
                     <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
-                    Message envoyé avec succès !
+                    {t('contact.success.title')}
                   </h3>
                   <p className="text-muted-foreground text-base sm:text-lg leading-relaxed">
-                    Votre message a été transmis. Je vous répondrai dans les plus brefs délais.
+                    {t('contact.success.message')}
                   </p>
                 </div>
               </motion.div>
@@ -626,11 +618,11 @@ export function ContactForm() {
                         layout
                       >
                         <div className="space-y-3 sm:space-y-4">
-                          <h3 className="text-lg sm:text-xl font-semibold text-foreground">Informations personnelles</h3>
+                          <h3 className="text-lg sm:text-xl font-semibold text-foreground">{t('contact.form.personalInfo')}</h3>
                           <div className="space-y-3 sm:space-y-4">
                             <div>
                               <label htmlFor="firstName" className="block text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
-                                Prénom *
+                                {t('contact.form.firstName')} *
                               </label>
                               <input
                                 ref={firstNameRef}
@@ -640,14 +632,14 @@ export function ContactForm() {
                                 value={formData.firstName}
                                 onChange={handleInputChange}
                                 className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-background/50 border border-border/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm sm:text-base"
-                                placeholder="Votre prénom"
+                                placeholder={t('contact.form.placeholder.firstName')}
                                 required
                               />
                             </div>
 
                             <div>
                               <label htmlFor="lastName" className="block text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
-                                Nom *
+                                {t('contact.form.lastName')} *
                               </label>
                               <input
                                 type="text"
@@ -656,7 +648,7 @@ export function ContactForm() {
                                 value={formData.lastName}
                                 onChange={handleInputChange}
                                 className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-background/50 border border-border/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm sm:text-base"
-                                placeholder="Votre nom"
+                                placeholder={t('contact.form.placeholder.lastName')}
                                 required
                               />
                             </div>
@@ -676,14 +668,14 @@ export function ContactForm() {
                         layout
                       >
                         <div className="space-y-3 sm:space-y-4">
-                          <h3 className="text-lg sm:text-xl font-semibold text-foreground">Coordonnées</h3>
+                          <h3 className="text-lg sm:text-xl font-semibold text-foreground">{t('contact.form.coordinates')}</h3>
                           <p className="text-xs sm:text-sm text-muted-foreground">
-                            Veuillez fournir au moins un email ou un numéro de téléphone pour que je puisse vous recontacter.
+                            {t('contact.validation.contactRequired')}
                           </p>
                           <div className="space-y-3 sm:space-y-4">
                             <div>
                               <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
-                                Email
+                                {t('contact.form.email')}
                               </label>
                               <input
                                 ref={emailRef}
@@ -695,7 +687,7 @@ export function ContactForm() {
                                 className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-background/50 border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm sm:text-base ${
                                   fieldErrors.email ? 'border-red-500' : 'border-border/50'
                                 }`}
-                                placeholder="votre.email@exemple.com"
+                                placeholder={t('contact.form.placeholder.email')}
                               />
                               {fieldErrors.email && (
                                 <p className="text-red-500 text-xs sm:text-sm mt-1">{fieldErrors.email}</p>
@@ -704,7 +696,7 @@ export function ContactForm() {
 
                             <div>
                               <label htmlFor="phone" className="block text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
-                                Numéro de téléphone
+                                {t('contact.form.phone')}
                               </label>
                               <div className="flex">
                                 {/* Menu déroulant pays */}
@@ -785,11 +777,11 @@ export function ContactForm() {
                         layout
                       >
                         <div className="space-y-3 sm:space-y-4">
-                          <h3 className="text-lg sm:text-xl font-semibold text-foreground">Votre message</h3>
+                          <h3 className="text-lg sm:text-xl font-semibold text-foreground">{t('contact.form.message')}</h3>
                           <div className="space-y-3 sm:space-y-4">
                             <div>
                               <label htmlFor="subject" className="block text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
-                                Sujet *
+                                {t('contact.form.subject')} *
                               </label>
                               <input
                                 ref={subjectRef}
@@ -799,14 +791,14 @@ export function ContactForm() {
                                 value={formData.subject}
                                 onChange={handleInputChange}
                                 className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-background/50 border border-border/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm sm:text-base"
-                                placeholder="Sujet de votre message"
+                                placeholder={t('contact.form.placeholder.subject')}
                                 required
                               />
                             </div>
 
                             <div>
                               <label htmlFor="message" className="block text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
-                                Message *
+                                {t('contact.form.message')} *
                               </label>
                               <textarea
                                 id="message"
@@ -815,7 +807,7 @@ export function ContactForm() {
                                 onChange={handleInputChange}
                                 rows={5}
                                 className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-background/50 border border-border/50 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none text-sm sm:text-base"
-                                placeholder="Décrivez votre projet ou votre demande..."
+                                placeholder={t('contact.form.placeholder.message')}
                                 required
                               />
                             </div>
@@ -842,7 +834,7 @@ export function ContactForm() {
                         whileHover={{ scale: status.type === 'loading' ? 1 : 1.02 }}
                         whileTap={{ scale: status.type === 'loading' ? 1 : 0.98 }}
                       >
-                        Suivant
+                        {t('common.next')}
                       </motion.button>
                     ) : (
                       <motion.button
@@ -859,10 +851,10 @@ export function ContactForm() {
                         {status.type === 'loading' ? (
                           <div className="flex items-center justify-center gap-2">
                             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                            Envoi en cours...
+                            {t('common.loading')}
                           </div>
                         ) : (
-                          'Envoyer le message'
+                          t('common.submit')
                         )}
                       </motion.button>
                     )}
@@ -882,7 +874,7 @@ export function ContactForm() {
                         whileHover={{ scale: status.type === 'loading' ? 1 : 1.02 }}
                         whileTap={{ scale: status.type === 'loading' ? 1 : 0.98 }}
                       >
-                        Précédent
+                        {t('common.previous')}
                       </motion.button>
                     )}
                   </div>

@@ -1,0 +1,167 @@
+{
+  "common": {
+    "loading": "Laden...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "close": "Schließen",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "submit": "Absenden",
+    "back": "Zurück"
+  },
+  "navigation": {
+    "home": "Startseite",
+    "projects": "Projekte",
+    "about": "Über mich",
+    "contact": "Kontakt",
+    "menu": "Navigationsmenü"
+  },
+  "home": {
+    "hero": {
+      "badge": "Offen für Möglichkeiten",
+      "title": {
+        "part1": "Entwickeln Sie Ihr Unternehmen mit einer Website, die",
+        "part2": "anzieht",
+        "part3": "und",
+        "part4": "konvertiert"
+      },
+      "description": "Ich höre auf Ihre Bedürfnisse und begleite Sie bei der Erstellung oder Verbesserung Ihrer maßgeschneiderten Website oder Webanwendung.",
+      "stats": {
+        "experience": "+{{years}} Jahre Entwicklung",
+        "business": "Geschäftsbewusstsein",
+        "interfaces": "Erfahren im Design intuitiver Benutzeroberflächen"
+      },
+      "cta": {
+        "contact": "Kontakt aufnehmen",
+        "projects": "Entdecken Sie meine Projekte"
+      },
+      "compact": {
+        "title": {
+          "part1": "Frontend-Entwickler",
+          "part2": "spezialisiert auf",
+          "part3": "React",
+          "part4": "und",
+          "part5": "Next.js"
+        },
+        "description": "Ich verwandle Ihre Ideen in moderne, leistungsstarke und zugängliche Webanwendungen.",
+        "cta": {
+          "projects": "Meine Projekte entdecken",
+          "contact": "Mich kontaktieren"
+        }
+      },
+      "pattern": {
+        "badge": "Portfolio 2025 • Offen für Möglichkeiten",
+        "title": {
+          "part1": "Schöpfer von",
+          "part2": "außergewöhnlichen",
+          "part3": "Web-",
+          "part4": "Erlebnissen"
+        },
+        "description": "Leidenschaftlicher Frontend-Entwickler, ich entwerfe und entwickle moderne Benutzeroberflächen, die Leistung, Zugänglichkeit und Design verbinden.",
+        "cta": {
+          "projects": "Meine Projekte erkunden",
+          "cv": "CV herunterladen"
+        }
+      }
+    },
+    "about": {
+      "title": "Über mich",
+      "description": "Full-Stack-Webentwickler mit einer Leidenschaft für Innovation und Kreativität. Spezialisiert auf moderne Technologien und außergewöhnliche Benutzererfahrungen.",
+      "skills": "Fähigkeiten",
+      "experience": "Erfahrung",
+      "education": "Ausbildung"
+    }
+  },
+  "projects": {
+    "title": "Meine Projekte",
+    "subtitle": "Entdecken Sie meine Arbeit und aktuellen Projekte",
+    "development": "🚧 Seite in Entwicklung...",
+    "filter": {
+      "all": "Alle",
+      "web": "Web",
+      "mobile": "Mobil",
+      "design": "Design"
+    },
+    "viewProject": "Projekt anzeigen",
+    "technologies": "Verwendete Technologien",
+    "description": "Beschreibung"
+  },
+  "about": {
+    "title": "Über Mich",
+    "subtitle": "Entdecken Sie meinen Werdegang, meine Fähigkeiten und meine Leidenschaft für die Entwicklung",
+    "development": "🚧 Seite in Entwicklung...",
+    "experience": {
+      "title": "Berufserfahrung",
+      "years": "Jahre Erfahrung"
+    },
+    "education": {
+      "title": "Ausbildung",
+      "degree": "Abschluss",
+      "school": "Schule",
+      "year": "Jahr"
+    },
+    "skills": {
+      "title": "Technische Fähigkeiten",
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "tools": "Werkzeuge",
+      "languages": "Sprachen"
+    }
+  },
+  "contact": {
+    "title": "Kontaktieren Sie mich",
+    "subtitle": "Haben Sie ein Projekt im Sinn? Eine Frage?",
+    "description": "Zögern Sie nicht, mich zu kontaktieren, ich freue mich darauf, mit Ihnen zu sprechen!",
+    "contactInfo": {
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "linkedin": "LinkedIn"
+    },
+    "form": {
+      "personalInfo": "Persönliche Informationen",
+      "coordinates": "Kontaktdaten",
+      "message": "Ihre Nachricht",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "subject": "Betreff",
+      "message": "Nachricht",
+      "required": "Erforderlich",
+      "optional": "Optional",
+      "placeholder": {
+        "firstName": "Ihr Vorname",
+        "lastName": "Ihr Nachname",
+        "email": "ihre.email@beispiel.com",
+        "phone": "Ihre Telefonnummer",
+        "subject": "Betreff Ihrer Nachricht",
+        "message": "Beschreiben Sie Ihr Projekt oder Ihre Anfrage..."
+      }
+    },
+    "validation": {
+      "firstNameRequired": "Vorname ist erforderlich",
+      "lastNameRequired": "Nachname ist erforderlich",
+      "emailInvalid": "Ungültiges E-Mail-Format",
+      "phoneInvalid": "Ungültiges Telefonformat",
+      "subjectRequired": "Betreff ist erforderlich",
+      "messageRequired": "Nachricht ist erforderlich",
+      "contactRequired": "Bitte geben Sie mindestens eine E-Mail oder Telefonnummer an"
+    },
+    "success": {
+      "title": "Nachricht erfolgreich gesendet!",
+      "message": "Ihre Nachricht wurde gesendet. Ich werde Ihnen so schnell wie möglich antworten."
+    },
+    "error": {
+      "title": "Fehler beim Senden der Nachricht",
+      "message": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 LY0T. Alle Rechte vorbehalten.",
+    "madeWith": "Hergestellt mit ❤️ in Frankreich"
+  }
+}

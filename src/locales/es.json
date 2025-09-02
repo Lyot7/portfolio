@@ -1,0 +1,167 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "submit": "Enviar",
+    "back": "Volver"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "projects": "Proyectos",
+    "about": "Sobre mí",
+    "contact": "Contacto",
+    "menu": "Menú de navegación"
+  },
+  "home": {
+    "hero": {
+      "badge": "Abierto a oportunidades",
+      "title": {
+        "part1": "Desarrolla tu negocio con un sitio web que",
+        "part2": "atrae",
+        "part3": "y",
+        "part4": "convierte"
+      },
+      "description": "Escucho tus necesidades y te acompaño en la creación o mejora de tu sitio web o aplicación web personalizada.",
+      "stats": {
+        "experience": "+{{years}} años de desarrollo",
+        "business": "Conciencia empresarial",
+        "interfaces": "Experimentado en diseño de interfaces intuitivas"
+      },
+      "cta": {
+        "contact": "Ponerse en contacto",
+        "projects": "Descubre mis proyectos"
+      },
+      "compact": {
+        "title": {
+          "part1": "Desarrollador Frontend",
+          "part2": "especializado en",
+          "part3": "React",
+          "part4": "y",
+          "part5": "Next.js"
+        },
+        "description": "Transformo tus ideas en aplicaciones web modernas, performantes y accesibles.",
+        "cta": {
+          "projects": "Descubrir mis proyectos",
+          "contact": "Contactarme"
+        }
+      },
+      "pattern": {
+        "badge": "Portfolio 2025 • Abierto a oportunidades",
+        "title": {
+          "part1": "Creador de",
+          "part2": "experiencias",
+          "part3": "web",
+          "part4": "excepcionales"
+        },
+        "description": "Desarrollador Frontend apasionado, diseño y desarrollo interfaces modernas que combinan rendimiento, accesibilidad y diseño.",
+        "cta": {
+          "projects": "Explorar mis proyectos",
+          "cv": "Descargar CV"
+        }
+      }
+    },
+    "about": {
+      "title": "Sobre mí",
+      "description": "Desarrollador web full-stack con pasión por la innovación y creatividad. Especializado en tecnologías modernas y experiencias de usuario excepcionales.",
+      "skills": "Habilidades",
+      "experience": "Experiencia",
+      "education": "Educación"
+    }
+  },
+  "projects": {
+    "title": "Mis Proyectos",
+    "subtitle": "Descubre mi trabajo y proyectos recientes",
+    "development": "🚧 Página en desarrollo...",
+    "filter": {
+      "all": "Todos",
+      "web": "Web",
+      "mobile": "Móvil",
+      "design": "Diseño"
+    },
+    "viewProject": "Ver proyecto",
+    "technologies": "Tecnologías utilizadas",
+    "description": "Descripción"
+  },
+  "about": {
+    "title": "Sobre Mí",
+    "subtitle": "Descubre mi trayectoria, habilidades y pasión por el desarrollo",
+    "development": "🚧 Página en desarrollo...",
+    "experience": {
+      "title": "Experiencia profesional",
+      "years": "años de experiencia"
+    },
+    "education": {
+      "title": "Educación",
+      "degree": "Título",
+      "school": "Escuela",
+      "year": "Año"
+    },
+    "skills": {
+      "title": "Habilidades técnicas",
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "tools": "Herramientas",
+      "languages": "Lenguajes"
+    }
+  },
+  "contact": {
+    "title": "Contáctame",
+    "subtitle": "¿Tienes un proyecto en mente? ¿Una pregunta?",
+    "description": "No dudes en contactarme, ¡estaré encantado de charlar contigo!",
+    "contactInfo": {
+      "email": "Email",
+      "phone": "Teléfono",
+      "linkedin": "LinkedIn"
+    },
+    "form": {
+      "personalInfo": "Información personal",
+      "coordinates": "Datos de contacto",
+      "message": "Tu mensaje",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Email",
+      "phone": "Teléfono",
+      "subject": "Asunto",
+      "message": "Mensaje",
+      "required": "Requerido",
+      "optional": "Opcional",
+      "placeholder": {
+        "firstName": "Tu nombre",
+        "lastName": "Tu apellido",
+        "email": "tu.email@ejemplo.com",
+        "phone": "Tu número de teléfono",
+        "subject": "Asunto de tu mensaje",
+        "message": "Describe tu proyecto o solicitud..."
+      }
+    },
+    "validation": {
+      "firstNameRequired": "El nombre es requerido",
+      "lastNameRequired": "El apellido es requerido",
+      "emailInvalid": "Formato de email inválido",
+      "phoneInvalid": "Formato de teléfono inválido",
+      "subjectRequired": "El asunto es requerido",
+      "messageRequired": "El mensaje es requerido",
+      "contactRequired": "Por favor proporciona al menos un email o número de teléfono"
+    },
+    "success": {
+      "title": "¡Mensaje enviado con éxito!",
+      "message": "Tu mensaje ha sido enviado. Te responderé lo antes posible."
+    },
+    "error": {
+      "title": "Error al enviar mensaje",
+      "message": "Ocurrió un error. Por favor intenta de nuevo."
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 LY0T. Todos los derechos reservados.",
+    "madeWith": "Hecho con ❤️ en Francia"
+  }
+}
