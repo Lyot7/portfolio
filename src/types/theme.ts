@@ -7,7 +7,15 @@ export type Theme = 'light' | 'dark';
 export interface ThemeContextType {
   theme: Theme;
   toggleTheme: () => void;
+  setTheme: (theme: Theme) => void;
   mounted: boolean;
+}
+
+// Extension de l'interface Window pour la variable globale du thème
+declare global {
+  interface Window {
+    __INITIAL_THEME__?: Theme;
+  }
 }
 
 export interface ThemeProviderProps {

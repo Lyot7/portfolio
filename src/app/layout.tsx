@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { GlobalLayout } from "@/components/layout";
+import { ThemeLoader } from "@/components/ui/ThemeLoader";
 
 export const metadata: Metadata = {
   title: "LY0T - Développeur Web Full Stack",
@@ -91,6 +92,32 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <head>
+        {/* Script anti-flash pour le thème - 100% compatible SSR */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  // Stocker le thème dans une variable globale SANS modifier le DOM
+                  var savedTheme = localStorage.getItem('portfolio-theme');
+                  
+                  // Si pas de thème sauvegardé, détecter la préférence système
+                  if (!savedTheme) {
+                    var mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                    savedTheme = mediaQuery.matches ? 'dark' : 'light';
+                  }
+                  
+                  // Stocker le thème détecté dans la variable globale
+                  window.__INITIAL_THEME__ = savedTheme;
+                } catch (e) {
+                  // En cas d'erreur, garder le thème par défaut
+                  window.__INITIAL_THEME__ = 'dark';
+                }
+              })();
+            `,
+          }}
+        />
+        
         {/* PWA Meta Tags */}
         <meta name="application-name" content="LY0T Portfolio" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -118,6 +145,7 @@ export default function RootLayout({
       <body className="antialiased">
         <ThemeProvider>
           <LanguageProvider>
+            <ThemeLoader />
             <GlobalLayout>
               {children}
             </GlobalLayout>

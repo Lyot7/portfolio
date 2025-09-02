@@ -1,7 +1,7 @@
 # Portfolio Project - Cursor Rules
 
 ## Project Overview
-This is a modern freelance website built with clean architecture principles and best practices.
+This is a modern freelance website built with clean architecture principles and SOLID design patterns.
 
 ## Technology Stack
 - **Frontend**: Next.js 15+ with TypeScript
@@ -15,13 +15,27 @@ This is a modern freelance website built with clean architecture principles and 
 
 ## Architecture Principles
 
+### SOLID Principles Implementation
+- **Single Responsibility**: Each component/hook/utility has one clear purpose
+- **Open/Closed**: Components are extensible without modification
+- **Liskov Substitution**: Components can be replaced with compatible alternatives
+- **Interface Segregation**: Small, focused interfaces over large ones
+- **Dependency Inversion**: High-level modules don't depend on low-level modules
+
 ### Clean Architecture
 - Separate concerns into distinct layers
 - Follow the dependency rule (dependencies point inward)
 - Keep business logic independent of frameworks
 - Use dependency injection where appropriate
+- Implement composition over inheritance
 
-### Folder Structure
+### Component Composition Strategy
+- **Base Components**: Reusable, configurable building blocks
+- **Specialized Components**: Domain-specific components using composition
+- **Layout Components**: Structural components for page organization
+- **Section Components**: Content-specific components for different page sections
+
+## Folder Structure
 ```
 src/
 ├── app/                    # Next.js app router with i18n
@@ -30,37 +44,74 @@ src/
 │   │   ├── projets/       # Projects page
 │   │   ├── parcours/      # Journey/Experience page
 │   │   └── contact/       # Contact page
+│   ├── globals.css        # Global styles
+│   └── layout.tsx         # Root layout
 ├── components/             # Reusable UI components
-│   ├── ui/                # Base UI components + React Bits components
-│   ├── layout/            # Layout components (header, footer, nav)
-│   ├── sections/          # Page sections (hero, about, projects, etc.)
+│   ├── ui/                # Base UI components
+│   │   ├── buttons/       # Button components (Button, AnimatedButton, etc.)
+│   │   ├── forms/         # Form components (FormField, Input, etc.)
+│   │   └── index.ts       # Main UI exports
+│   ├── layout/            # Layout components (Header, Navigation, etc.)
+│   ├── sections/          # Page sections (HeroSection, etc.)
 │   ├── skeletons/         # Loading skeletons (React Bits)
 │   └── loaders/           # Loading components (React Bits)
-├── lib/                   # Utility functions and configurations
 ├── hooks/                 # Custom React hooks
+│   ├── useForm.ts         # Form management hook
+│   ├── useMediaQuery.ts   # Media query hook
+│   ├── useScrollDirection.ts # Scroll direction hook
+│   └── useTranslations.ts # Translations hook
+├── lib/                   # Utility functions and configurations
+│   ├── validation.ts      # Validation utilities
+│   ├── utils.ts           # General utilities
+│   ├── languages.ts       # Language utilities
+│   └── index.ts           # Main lib exports
+├── contexts/              # React contexts
+│   ├── ThemeContext.tsx   # Theme management
+│   └── LanguageContext.tsx # Language management
 ├── types/                 # TypeScript type definitions
+│   ├── theme.ts           # Theme types
+│   └── index.ts           # Main type exports
 ├── data/                  # Static data and constants
-├── styles/                # Global styles and Tailwind config
+│   └── constants.ts       # Application constants
 ├── locales/               # Translation files (fr, en, etc.)
 └── assets/                # Images, icons, and other static assets
 ```
 
-### Component Guidelines
-- Use functional components with TypeScript
-- Implement proper prop types and interfaces
-- Follow the single responsibility principle
-- Use composition over inheritance
-- Prefer named exports over default exports for components
-- Leverage React Bits components for creative and beautiful UI elements
-- Always implement loading states with React Bits skeletons and loaders
-- Ensure smooth page transitions with Next.js and React Bits animations
+## Component Guidelines
+
+### SOLID Component Design
+- **Single Responsibility**: One component = one purpose
+- **Open/Closed**: Extend with props, not by modifying
+- **Composition**: Use composition over inheritance
+- **Interface Segregation**: Small, focused prop interfaces
+- **Dependency Inversion**: Depend on abstractions, not concretions
+
+### Component Architecture
+- **Base Components**: Button, Input, FormField (highly reusable)
+- **Specialized Components**: SubmitButton, ActionButton (composed from base)
+- **Layout Components**: Header, Navigation, GlobalLayout (structural)
+- **Section Components**: HeroSection, ContactForm (content-specific)
+
+### Component Composition Pattern
+```typescript
+// Base component
+<Button variant="primary" size="lg">Click me</Button>
+
+// Specialized component using composition
+<SubmitButton isLoading={true}>Submit</SubmitButton>
+
+// Layout component
+<Header>
+  <Navigation items={navItems} />
+</Header>
+```
 
 ### File Naming Conventions
-- Components: PascalCase (e.g., `HeroSection.tsx`)
-- Hooks: camelCase with "use" prefix (e.g., `useScrollAnimation.ts`)
-- Utilities: camelCase (e.g., `formatDate.ts`)
-- Types: PascalCase (e.g., `ProjectData.ts`)
-- Constants: UPPER_SNAKE_CASE (e.g., `API_ENDPOINTS.ts`)
+- **Components**: PascalCase (e.g., `HeroSection.tsx`)
+- **Hooks**: camelCase with "use" prefix (e.g., `useForm.ts`)
+- **Utilities**: camelCase (e.g., `validation.ts`)
+- **Types**: PascalCase (e.g., `ButtonProps.ts`)
+- **Constants**: UPPER_SNAKE_CASE (e.g., `APP_CONFIG`)
 
 ## Code Quality Standards
 
@@ -70,13 +121,58 @@ src/
 - Avoid `any` type unless absolutely necessary
 - Prefer interfaces over types for object shapes
 - Use utility types when appropriate (Partial, Pick, Omit, etc.)
+- Export types from dedicated type files
 
 ### React Best Practices
+- Use functional components with TypeScript
+- Implement proper prop types and interfaces
 - Use React.memo() for performance optimization when needed
 - Implement proper error boundaries
 - Use proper key props in lists
 - Avoid unnecessary re-renders
 - Use useCallback and useMemo judiciously
+
+### SOLID Implementation Examples
+
+#### Single Responsibility
+```typescript
+// ✅ Good: One component, one purpose
+export function SubmitButton({ isLoading, children, ...props }) {
+  return <Button type="submit" variant="primary" isLoading={isLoading} {...props}>{children}</Button>;
+}
+
+// ❌ Bad: Multiple responsibilities
+export function FormWithValidationAndSubmission() { /* Too many things */ }
+```
+
+#### Open/Closed Principle
+```typescript
+// ✅ Good: Extensible through props
+export function Button({ variant, size, children, ...props }) {
+  const variants = { primary: 'bg-primary', secondary: 'bg-secondary' };
+  return <button className={variants[variant]} {...props}>{children}</button>;
+}
+
+// ❌ Bad: Hard to extend
+export function Button() {
+  return <button className="bg-primary text-white">Click me</button>;
+}
+```
+
+#### Interface Segregation
+```typescript
+// ✅ Good: Small, focused interfaces
+export interface ButtonProps {
+  variant?: 'primary' | 'secondary';
+  size?: 'sm' | 'md' | 'lg';
+  children: ReactNode;
+}
+
+// ❌ Bad: Large, unfocused interface
+export interface ComponentProps {
+  // 50+ properties for different use cases
+}
+```
 
 ### Styling Guidelines
 - Use Tailwind CSS utility classes
@@ -84,6 +180,7 @@ src/
 - Follow mobile-first responsive design
 - Maintain consistent spacing using Tailwind's scale
 - Use CSS variables for theme customization
+- Leverage CSS-in-JS for dynamic styles when needed
 
 ### Performance
 - Optimize images (use Next.js Image component)
@@ -98,11 +195,12 @@ src/
 
 ## Code Organization Rules
 
-### No Duplication
+### No Duplication (DRY Principle)
 - Extract common logic into utilities or hooks
 - Create reusable components for repeated UI patterns
 - Use constants for repeated values
 - Implement shared types for common data structures
+- Centralize configuration in constants files
 
 ### Import Organization
 ```typescript
@@ -115,12 +213,25 @@ import { motion } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 
 // 3. Internal imports (absolute paths preferred)
-import { Button } from '@/components/ui/Button'
-import { useScrollAnimation } from '@/hooks/useScrollAnimation'
-import { ProjectData } from '@/types/Project'
+import { Button } from '@/components/ui/buttons'
+import { useForm } from '@/hooks/useForm'
+import { ButtonProps } from '@/types/Button'
 
 // 4. Relative imports (only for closely related files)
 import './styles.css'
+```
+
+### Component Export Strategy
+```typescript
+// ✅ Good: Named exports for components
+export { Button } from './Button';
+export { SubmitButton } from './SubmitButton';
+
+// ✅ Good: Type exports
+export type { ButtonProps } from './Button';
+
+// ❌ Bad: Default exports for components
+export default Button;
 ```
 
 ### Error Handling
@@ -128,12 +239,14 @@ import './styles.css'
 - Use try-catch blocks for async operations
 - Provide meaningful error messages
 - Log errors appropriately for debugging
+- Use validation utilities for form handling
 
 ## Git Workflow
 - Use conventional commit messages
 - Create feature branches for development
 - Write descriptive commit messages
 - Keep commits atomic and focused
+- Follow SOLID principles in code changes
 
 ## Accessibility (a11y)
 - Use semantic HTML elements
@@ -141,32 +254,37 @@ import './styles.css'
 - Ensure keyboard navigation works
 - Maintain proper color contrast ratios
 - Test with screen readers
+- Follow WCAG guidelines
 
 ## Security
 - Sanitize user inputs
 - Use environment variables for sensitive data
 - Implement proper CSP headers
 - Follow OWASP guidelines
+- Validate all form inputs
 
 ## Testing Strategy
 - Write unit tests for utilities and hooks
 - Implement integration tests for critical flows
 - Use React Testing Library for component tests
 - Maintain good test coverage
+- Test SOLID principles implementation
 
 ## Development Workflow
-1. Plan the feature/component architecture
+1. Plan the feature/component architecture following SOLID principles
 2. Create types and interfaces first
-3. Implement the component/feature
-4. Add proper styling with Tailwind
-5. Test functionality and responsiveness
-6. Optimize for performance
-7. Add documentation if needed
+3. Implement base components with single responsibility
+4. Create specialized components using composition
+5. Add proper styling with Tailwind
+6. Test functionality and responsiveness
+7. Optimize for performance
+8. Ensure SOLID compliance
 
 ## Documentation
-- Use JSDoc comments for complex functions
-- Document component props with TypeScript interfaces
-- Maintain README for setup instructions
+- Document component interfaces and props
+- Document hook usage and return values
+- Document utility functions and their purposes
+- Document SOLID implementation decisions
 - Document any custom configurations
 
 ## Prohibited Practices
@@ -176,6 +294,9 @@ import './styles.css'
 - No magic numbers (use named constants)
 - No deep nesting (max 3-4 levels)
 - No large components (split into smaller ones)
+- No violation of SOLID principles
+- No component with multiple responsibilities
+- No hardcoded values (use constants)
 
 ## macOS Development Notes
 - Use absolute paths consistently
@@ -248,4 +369,35 @@ Language Switching:
 4. **Images**: Use Next.js Image with React Bits placeholder components
 5. **Fonts**: Preload critical fonts, fallback gracefully
 
-Remember: Always check for existing implementations before creating new ones. Maintain consistency across the codebase and follow these established patterns. Prioritize user experience with React Bits components for a polished, professional portfolio.
+## SOLID Implementation Checklist
+
+### Single Responsibility Principle
+- [ ] Each component has one clear purpose
+- [ ] Each hook manages one specific concern
+- [ ] Each utility function does one thing
+- [ ] Each type represents one concept
+
+### Open/Closed Principle
+- [ ] Components are extensible through props
+- [ ] Hooks accept configuration options
+- [ ] Utilities are configurable
+- [ ] Types are extensible
+
+### Liskov Substitution Principle
+- [ ] Components can be replaced with compatible alternatives
+- [ ] Hooks can be swapped for similar functionality
+- [ ] Utilities can be replaced with equivalent functions
+
+### Interface Segregation Principle
+- [ ] Prop interfaces are small and focused
+- [ ] Hook return types are minimal
+- [ ] Utility function signatures are simple
+- [ ] Type definitions are specific
+
+### Dependency Inversion Principle
+- [ ] High-level components don't depend on low-level ones
+- [ ] Components depend on abstractions (interfaces)
+- [ ] Hooks are framework-agnostic
+- [ ] Utilities are independent of implementation details
+
+Remember: Always check for existing implementations before creating new ones. Maintain consistency across the codebase and follow these established SOLID patterns. Prioritize user experience with React Bits components for a polished, professional portfolio while maintaining clean, maintainable code architecture.

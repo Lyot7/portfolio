@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ButtonPrimary, ButtonSecondary } from '@/components/ui';
+import { Button } from '@/components/ui/buttons';
+import { AnimatedButton } from '@/components/ui';
 import { ArrowRight, Download, Eye } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslations } from '@/hooks/useTranslations';
@@ -81,17 +82,17 @@ export function HeroSection() {
           {/* Boutons d'action */}
           <div className="flex flex-col sm:flex-row gap-4 mb-12">
             <Link href="/contact" className="w-full sm:w-auto">
-              <ButtonPrimary size="lg" className="group w-full sm:w-auto" starAnimation={true} animationSpeed="4s">
+              <AnimatedButton size="lg" className="group w-full sm:w-auto">
                 {t('home.hero.cta.contact')}
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-              </ButtonPrimary>
+              </AnimatedButton>
             </Link>
             
             <Link href="/projets" className="w-full sm:w-auto">
-              <ButtonSecondary size="lg" className="group w-full sm:w-auto">
+              <Button variant="secondary" size="lg" className="group w-full sm:w-auto">
                 {t('home.hero.cta.projects')}
                 <Eye className="w-5 h-5 transition-transform group-hover:scale-110" />
-              </ButtonSecondary>
+              </Button>
             </Link>
           </div>
         </div>
@@ -126,14 +127,14 @@ export function HeroSectionCompact() {
 
           {/* Boutons d'action */}
           <div className="flex flex-col sm:flex-row gap-3">
-            <ButtonPrimary className="group shadow-lg">
+            <AnimatedButton className="group shadow-lg">
               {t('home.hero.compact.cta.projects')}
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </ButtonPrimary>
+            </AnimatedButton>
             
-            <ButtonSecondary className="shadow-md">
+            <Button variant="secondary" className="shadow-md">
               {t('home.hero.compact.cta.contact')}
-            </ButtonSecondary>
+            </Button>
           </div>
         </div>
       </div>
@@ -188,15 +189,15 @@ export function HeroSectionWithPattern() {
 
           {/* Boutons avec animation */}
           <div className="flex flex-col sm:flex-row gap-4 animate-in slide-in-from-left duration-700 delay-500">
-            <ButtonPrimary size="lg" className="group shadow-lg hover:shadow-xl">
+            <AnimatedButton size="lg" className="group shadow-lg hover:shadow-xl">
               {t('home.hero.pattern.cta.projects')}
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-            </ButtonPrimary>
+            </AnimatedButton>
             
-            <ButtonSecondary size="lg" className="group">
+            <Button variant="secondary" size="lg" className="group">
               <Download className="w-5 h-5 transition-transform group-hover:scale-110" />
               {t('home.hero.pattern.cta.cv')}
-            </ButtonSecondary>
+            </Button>
           </div>
         </div>
       </div>
