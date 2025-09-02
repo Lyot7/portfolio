@@ -24,7 +24,7 @@
     "hero": {
       "badge": "Ouvert aux opportunités",
       "title": {
-        "part1": "Développe ton business avec un site web qui",
+        "part1": "Développe ton activité avec un site web qui",
         "part2": "attire",
         "part3": "et",
         "part4": "convertis"
@@ -125,7 +125,7 @@
     "form": {
       "personalInfo": "Informations personnelles",
       "coordinates": "Coordonnées",
-      "message": "Votre message",
+      "messageSection": "Votre message",
       "firstName": "Prénom",
       "lastName": "Nom",
       "email": "Email",

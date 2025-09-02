@@ -124,7 +124,7 @@
     "form": {
       "personalInfo": "Personal information",
       "coordinates": "Contact details",
-      "message": "Your message",
+      "messageSection": "Your message",
       "firstName": "First name",
       "lastName": "Last name",
       "email": "Email",

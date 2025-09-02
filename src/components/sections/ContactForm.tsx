@@ -777,7 +777,7 @@ export function ContactForm() {
                         layout
                       >
                         <div className="space-y-3 sm:space-y-4">
-                          <h3 className="text-lg sm:text-xl font-semibold text-foreground">{t('contact.form.message')}</h3>
+                          <h3 className="text-lg sm:text-xl font-semibold text-foreground">{t('contact.form.messageSection')}</h3>
                           <div className="space-y-3 sm:space-y-4">
                             <div>
                               <label htmlFor="subject" className="block text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
@@ -798,7 +798,7 @@ export function ContactForm() {
 
                             <div>
                               <label htmlFor="message" className="block text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
-                                {t('contact.form.message')} *
+                                {t('contact.form.messageSection')} *
                               </label>
                               <textarea
                                 id="message"
