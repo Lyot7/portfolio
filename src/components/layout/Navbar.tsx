@@ -2,14 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Logo } from '@/components/ui/Logo';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
 import { cn } from '@/lib/utils';
 import { useScrollDirection, useIsMobile } from '@/hooks';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslations } from '@/hooks/useTranslations';
+import { NavbarSkeleton } from '@/components/skeletons';
 
 /**
  * Navbar Component
@@ -23,7 +24,12 @@ export function Navbar() {
   const pathname = usePathname();
   const { scrollDirection, isAtTop } = useScrollDirection();
   const isMobile = useIsMobile();
-  const { t } = useLanguage();
+  const { t, isLoading } = useTranslations();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const navItems = [
     { name: t('navigation.home'), href: '/' },
@@ -34,6 +40,11 @@ export function Navbar() {
 
   // Logique de visibilité selon l'appareil et le scroll
   const shouldHideNavbar = isMobile && scrollDirection === 'down' && !isAtTop;
+
+  // Afficher le skeleton pendant le chargement des traductions
+  if (isLoading || !mounted) {
+    return <NavbarSkeleton />;
+  }
 
   return (
     <div className={cn(

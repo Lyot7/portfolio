@@ -435,6 +435,12 @@ export function ComponentWithSkeleton() {
 - Include logo placeholder, navigation placeholder, theme toggle, language selector
 - Responsive height: `h-16 sm:h-20`
 
+#### Navbar Skeleton
+- Display during translation loading only
+- Match exact navbar dimensions and layout
+- Include logo placeholder, navigation items, theme toggle, language selector, mobile menu
+- Responsive: `px-6 sm:px-8 lg:px-16 py-4 sm:py-6 md:py-8`
+
 #### Logo Skeleton
 - Display during image and typography loading only
 - Match exact logo dimensions and layout
@@ -462,6 +468,7 @@ export function ComponentWithSkeleton() {
 ```
 src/components/skeletons/
 ├── HeaderSkeleton.tsx      # Header loading state
+├── NavbarSkeleton.tsx      # Navbar loading state
 ├── LogoSkeleton.tsx        # Logo loading state
 ├── NavigationSkeleton.tsx  # Navigation loading state
 ├── HeroSkeleton.tsx        # Hero section loading state
@@ -474,6 +481,7 @@ src/components/skeletons/
 ```typescript
 // ✅ Good: Named exports for specific skeletons
 export { HeaderSkeleton } from './HeaderSkeleton';
+export { NavbarSkeleton } from './NavbarSkeleton';
 export { LogoSkeleton } from './LogoSkeleton';
 export { NavigationSkeleton } from './NavigationSkeleton';
 export { HeroSkeleton } from './HeroSkeleton';
