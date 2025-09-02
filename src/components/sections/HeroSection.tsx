@@ -59,7 +59,7 @@ export function HeroSection() {
             {t('home.hero.title.part1')}{' '}
             <span className="text-primary">{t('home.hero.title.part2')}</span>{' '}
             {t('home.hero.title.part3')}{' '}
-            <span className="text-primary">{t('home.hero.title.part4')}</span>
+            <span className="text-primary">{t('home.hero.title.part4')}</span>.
           </h1>
 
           {/* Sous-titre */}
