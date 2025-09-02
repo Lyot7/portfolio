@@ -1,59 +1,52 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
+import { useTranslations } from '@/hooks/useTranslations';
+import { NavigationSkeleton } from '@/components/skeletons';
 
-export interface NavigationItem {
-  href: string;
-  label: string;
-  icon?: React.ReactNode;
-}
+export function Navigation() {
+  const { t, isLoading } = useTranslations();
+  const [mounted, setMounted] = useState(false);
 
-export interface NavigationProps {
-  items: NavigationItem[];
-  className?: string;
-  itemClassName?: string;
-  activeClassName?: string;
-}
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-/**
- * Navigation - Composant de navigation principal
- * 
- * Respecte le principe de responsabilité unique (SOLID)
- * Seulement responsable de l'affichage de la navigation
- */
-export function Navigation({ 
-  items, 
-  className,
-  itemClassName,
-  activeClassName = "text-primary font-medium"
-}: NavigationProps) {
-  const pathname = usePathname();
+  // Afficher le skeleton pendant le chargement des traductions
+  if (isLoading || !mounted) {
+    return <NavigationSkeleton />;
+  }
 
   return (
-    <nav className={cn("flex items-center gap-6", className)}>
-      {items.map((item) => {
-        const isActive = pathname === item.href;
-        
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={cn(
-              "flex items-center gap-2 px-3 py-2 rounded-md transition-colors",
-              "hover:text-primary hover:bg-primary/10",
-              isActive && activeClassName,
-              itemClassName
-            )}
-          >
-            {item.icon && (
-              <span className="flex-shrink-0">{item.icon}</span>
-            )}
-            <span>{item.label}</span>
-          </Link>
-        );
-      })}
+    <nav className="hidden lg:flex items-center gap-8">
+      <Link 
+        href="/" 
+        className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
+      >
+        {t('navigation.home')}
+      </Link>
+      
+      <Link 
+        href="/projets" 
+        className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
+      >
+        {t('navigation.projects')}
+      </Link>
+      
+      <Link 
+        href="/parcours" 
+        className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
+      >
+        {t('navigation.journey')}
+      </Link>
+      
+      <Link 
+        href="/contact" 
+        className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
+      >
+        {t('navigation.contact')}
+      </Link>
     </nav>
   );
 }

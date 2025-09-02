@@ -7,6 +7,7 @@ import { AnimatedButton } from '@/components/ui';
 import { ArrowRight, Download, Eye } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslations } from '@/hooks/useTranslations';
+import { HeroSkeleton } from '@/components/skeletons';
 
 // Fonction pour calculer les années d'expérience depuis le 1er septembre 2021
 function calculateYearsOfExperience(): number {
@@ -26,7 +27,7 @@ function calculateYearsOfExperience(): number {
 }
 
 export function HeroSection() {
-  const { t, translateWithVars } = useTranslations();
+  const { t, translateWithVars, isLoading } = useTranslations();
   const [yearsOfExperience, setYearsOfExperience] = useState<number>(0);
   const [mounted, setMounted] = useState(false);
 
@@ -34,6 +35,11 @@ export function HeroSection() {
     setMounted(true);
     setYearsOfExperience(calculateYearsOfExperience());
   }, []);
+
+  // Afficher le skeleton pendant le chargement des traductions
+  if (isLoading || !mounted) {
+    return <HeroSkeleton />;
+  }
 
   return (
     <section className="min-h-screen flex items-center pt-28 sm:pt-32 md:pt-36 lg:pt-40 xl:pt-44 pb-20 px-6 sm:px-8 lg:px-16">

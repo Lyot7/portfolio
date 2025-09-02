@@ -369,6 +369,133 @@ Language Switching:
 4. **Images**: Use Next.js Image with React Bits placeholder components
 5. **Fonts**: Preload critical fonts, fallback gracefully
 
+## Skeleton System Guidelines
+
+### Core Principle
+**Skeletons are ONLY displayed during REAL loading states, NEVER for artificial delays.**
+
+### When to Use Skeletons
+✅ **USE Skeletons For:**
+- **Translation loading** (i18n initialization) - **PRIMARY USE CASE**
+- **API calls** (fetching data from backend)
+- **Image loading** (lazy loading below-the-fold content)
+- **Component mounting** (complex component initialization)
+- **Authentication state** (user login/logout process)
+
+❌ **NEVER Use Skeletons For:**
+- **Artificial delays** (setTimeout for "smooth" transitions)
+- **Already loaded content** (forcing skeleton display after content is ready)
+- **Theme switching** (use CSS transitions instead)
+- **Navigation between pages** (use page-level loading states)
+
+### Skeleton Implementation Pattern
+```typescript
+export function ComponentWithSkeleton() {
+  const { t, isLoading } = useTranslations();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Display skeleton ONLY during real translation loading
+  if (isLoading || !mounted) {
+    return <ComponentSkeleton />;
+  }
+
+  return <ActualComponent />;
+}
+```
+
+### Translation Loading Strategy
+- **Wait for translations** before displaying any text content
+- **Use `isLoading` from useTranslations hook** to detect translation readiness
+- **Hide text content** (like `home.title`) until translations are loaded
+- **Show skeletons immediately** when translations are loading
+- **Transition smoothly** from skeleton to translated content
+
+### Skeleton Design Requirements
+- **Ultra-faithful**: Use EXACT same Tailwind classes as real component
+- **Responsive**: Match real component dimensions at all breakpoints
+- **Transparent backgrounds**: Use `bg-muted/20` or `bg-muted/30` for subtle visibility
+- **No white backgrounds**: Skeletons should blend with page background
+- **Same layout**: Maintain identical spacing, padding, and positioning
+
+### Performance Guidelines
+- **No artificial delays**: Remove all setTimeout for skeleton display
+- **Instant skeleton display**: Show skeletons immediately when translations are loading
+- **Smooth transitions**: 300ms maximum for skeleton to content transitions
+- **Progressive loading**: Load critical content first, then enhance
+
+### Component-Specific Skeleton Rules
+
+#### Header Skeleton
+- Display during translation loading only
+- Match exact header dimensions and layout
+- Include logo placeholder, navigation placeholder, theme toggle, language selector
+- Responsive height: `h-16 sm:h-20`
+
+#### Logo Skeleton
+- Display during image and typography loading only
+- Match exact logo dimensions and layout
+- Include favicon placeholder and text placeholder
+- Same spacing: `gap-3`
+
+#### Navigation Skeleton
+- Display during translation loading only
+- Match navigation item layout and spacing
+- Include all navigation items: Home, Projects, Journey, Contact
+- Responsive: `hidden lg:flex`
+
+#### Hero Section Skeleton
+- Display during translation and data loading
+- Match hero section layout exactly
+- Include badge, title, description, stats, buttons
+- Responsive text sizes and spacing
+
+#### Form Skeleton
+- Display during form validation or submission
+- Match form field layout and dimensions
+- Include input placeholders and button states
+
+### Skeleton File Organization
+```
+src/components/skeletons/
+├── HeaderSkeleton.tsx      # Header loading state
+├── LogoSkeleton.tsx        # Logo loading state
+├── NavigationSkeleton.tsx  # Navigation loading state
+├── HeroSkeleton.tsx        # Hero section loading state
+├── FormSkeleton.tsx        # Form loading state
+├── CardSkeleton.tsx        # Generic card loading state
+└── index.ts                # Centralized exports
+```
+
+### Skeleton Export Pattern
+```typescript
+// ✅ Good: Named exports for specific skeletons
+export { HeaderSkeleton } from './HeaderSkeleton';
+export { LogoSkeleton } from './LogoSkeleton';
+export { NavigationSkeleton } from './NavigationSkeleton';
+export { HeroSkeleton } from './HeroSkeleton';
+
+// ❌ Bad: Exporting non-existent skeletons
+export { NonExistentSkeleton } from './NonExistentSkeleton';
+```
+
+### Integration with React Bits
+- **Prefer React Bits skeletons** when available for consistency
+- **Extend with custom skeletons** for specific component needs
+- **Maintain visual consistency** with React Bits design system
+- **Use React Bits loading patterns** for inspiration
+
+### Testing Skeleton Behavior
+- **Verify translation loading** displays skeletons correctly
+- **Test responsive behavior** across all breakpoints
+- **Ensure smooth transitions** between skeleton and content
+- **Validate no white flashes** during loading
+- **Check accessibility** of skeleton elements
+- **Verify no text content** (like `home.title`) is visible during loading
+
 ## SOLID Implementation Checklist
 
 ### Single Responsibility Principle
@@ -400,4 +527,4 @@ Language Switching:
 - [ ] Hooks are framework-agnostic
 - [ ] Utilities are independent of implementation details
 
-Remember: Always check for existing implementations before creating new ones. Maintain consistency across the codebase and follow these established SOLID patterns. Prioritize user experience with React Bits components for a polished, professional portfolio while maintaining clean, maintainable code architecture.
+Remember: Always check for existing implementations before creating new ones. Maintain consistency across the codebase and follow these established SOLID patterns. Prioritize user experience with React Bits components for a polished, professional portfolio while maintaining clean, maintainable code architecture. **Most importantly: Skeletons are for REAL loading, not artificial delays!**

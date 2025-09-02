@@ -1,8 +1,10 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { LogoSkeleton } from '@/components/skeletons';
 
 interface LogoProps {
   className?: string;
@@ -17,6 +19,20 @@ interface LogoProps {
  * Peut être utilisé comme lien vers la page d'accueil.
  */
 export function Logo({ className = "", showText = true, size = "md" }: LogoProps) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    
+    // Simuler le temps de chargement de l'image et de la typo
+    const timer = setTimeout(() => {
+      setImageLoaded(true);
+    }, 150); // 150ms pour le chargement de l'image et de la typo
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const sizeClasses = {
     sm: 'h-6 w-6',
     md: 'h-8 w-8', 
@@ -28,6 +44,11 @@ export function Logo({ className = "", showText = true, size = "md" }: LogoProps
     md: 'text-xl',
     lg: 'text-2xl'
   };
+
+  // Afficher le skeleton pendant le chargement de l'image et de la typo
+  if (!imageLoaded || !mounted) {
+    return <LogoSkeleton />;
+  }
 
   return (
     <Link 

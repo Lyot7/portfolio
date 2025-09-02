@@ -17,3 +17,7 @@ export { ThemeLoader } from './ThemeLoader';
 // Language components
 export { LanguageSelector } from './LanguageSelector';
 export { LanguageTest } from './LanguageTest';
+
+// Skeleton components
+export { SkeletonWrapper } from './SkeletonWrapper';
+export type { SkeletonWrapperProps } from './SkeletonWrapper';

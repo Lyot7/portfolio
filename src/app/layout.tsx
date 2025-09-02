@@ -3,7 +3,6 @@ import "./globals.css";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { GlobalLayout } from "@/components/layout";
-import { ThemeLoader } from "@/components/ui/ThemeLoader";
 
 export const metadata: Metadata = {
   title: "LY0T - Développeur Web Full Stack",
@@ -145,7 +144,6 @@ export default function RootLayout({
       <body className="antialiased">
         <ThemeProvider>
           <LanguageProvider>
-            <ThemeLoader />
             <GlobalLayout>
               {children}
             </GlobalLayout>
