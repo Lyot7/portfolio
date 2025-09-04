@@ -15,8 +15,6 @@ export interface ProjectBentoProps {
     githubUrl?: string;
     liveUrl?: string;
     technologies: string[];
-    estimatedTime: string;
-    date: string;
   };
   enableBorderGlow?: boolean;
   disableAnimations?: boolean;
@@ -249,6 +247,77 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
           }
+          
+          /* Styles pour le HTML dans la description */
+          .prose-invert {
+            --tw-prose-body: rgb(255 255 255);
+            --tw-prose-headings: rgb(255 255 255);
+            --tw-prose-lead: rgb(255 255 255);
+            --tw-prose-links: rgb(34 197 94);
+            --tw-prose-bold: rgb(255 255 255);
+            --tw-prose-counters: rgb(255 255 255);
+            --tw-prose-bullets: rgb(255 255 255);
+            --tw-prose-hr: rgb(255 255 255);
+            --tw-prose-quotes: rgb(255 255 255);
+            --tw-prose-quote-borders: rgb(34 197 94);
+            --tw-prose-captions: rgb(255 255 255);
+            --tw-prose-code: rgb(34 197 94);
+            --tw-prose-pre-code: rgb(255 255 255);
+            --tw-prose-pre-bg: rgba(6, 0, 16, 0.8);
+            --tw-prose-th-borders: rgb(34 197 94);
+            --tw-prose-td-borders: rgb(34 197 94);
+          }
+          
+          .prose-invert a {
+            color: rgb(34 197 94);
+            text-decoration: underline;
+            text-decoration-color: rgba(34, 197, 94, 0.5);
+            transition: all 0.2s ease;
+          }
+          
+          .prose-invert a:hover {
+            color: rgb(34 197 94);
+            text-decoration-color: rgb(34 197 94);
+            text-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
+          }
+          
+          .prose-invert ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin: 0.5rem 0;
+          }
+          
+          .prose-invert li {
+            color: rgb(255 255 255);
+            margin: 0.25rem 0;
+          }
+          
+          .prose-invert li::marker {
+            color: rgb(34 197 94);
+          }
+          
+          .prose-invert p {
+            margin: 0.5rem 0;
+          }
+          
+          .prose-invert strong {
+            color: rgb(34 197 94);
+            font-weight: 600;
+          }
+          
+          .prose-invert em {
+            color: rgb(255 255 255);
+            font-style: italic;
+          }
+          
+          .prose-invert ul, .prose-invert ol {
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+          }
+          
+          .prose-invert li {
+            margin: 0.25rem 0;
+          }
         `}
       </style>
       
@@ -300,16 +369,17 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                       <div className="flex items-center justify-center h-full">
                         <LogoLoop
                           logos={getProjectLogos(card.content as string[])}
-                          speed={0.8}
+                          speed={0.3}
                           direction="left"
                           className="w-full h-12"
                         />
                       </div>
                     ) : card.isDescription ? (
-                      <div className="flex items-center justify-center h-full">
-                        <p className="text-sm text-white leading-relaxed text-center">
-                          {card.content as string}
-                        </p>
+                      <div className="flex items-start justify-start h-full p-4">
+                        <div 
+                          className="text-base text-white leading-relaxed text-left prose prose-invert prose-base max-w-none"
+                          dangerouslySetInnerHTML={{ __html: card.content as string }}
+                        />
                       </div>
                     ) : card.isLinks ? (
                       <div className="flex flex-col gap-1 h-full p-1">

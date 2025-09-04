@@ -10,8 +10,6 @@ export interface ProjectBentoGridProps {
     githubUrl?: string;
     liveUrl?: string;
     technologies: string[];
-    estimatedTime: string;
-    date: string;
   }>;
   className?: string;
 }

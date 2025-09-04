@@ -186,6 +186,8 @@ const ProjectBentoSkeleton: React.FC<ProjectBentoSkeletonProps> = ({ className =
                 <div className="skeleton-text"></div>
                 <div className="skeleton-text"></div>
                 <div className="skeleton-text skeleton-text-small"></div>
+                <div className="skeleton-text"></div>
+                <div className="skeleton-text skeleton-text-small"></div>
               </div>
             </div>
             

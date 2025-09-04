@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExternalLink, Github, Calendar, Clock } from 'lucide-react';
+import { ExternalLink, Github } from 'lucide-react';
 
 export interface ProjectCardProps {
   title: string;
@@ -9,8 +9,6 @@ export interface ProjectCardProps {
   githubUrl?: string;
   liveUrl?: string;
   technologies: string[];
-  estimatedTime: string;
-  date: string;
   className?: string;
 }
 
@@ -22,8 +20,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   githubUrl,
   liveUrl,
   technologies,
-  estimatedTime,
-  date,
   className = ''
 }) => {
   return (
@@ -83,21 +79,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         </div>
       </div>
 
-      {/* Métadonnées et actions - style bento compact */}
+      {/* Boutons d'action - style bento compact */}
       <div className="mt-auto">
-        {/* Métadonnées */}
-        <div className="flex items-center gap-3 text-xs text-gray-400 mb-3">
-          <div className="flex items-center gap-1">
-            <Clock className="h-3 w-3 text-green-400" />
-            <span>{estimatedTime}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Calendar className="h-3 w-3 text-green-400" />
-            <span>{date}</span>
-          </div>
-        </div>
-
-        {/* Boutons d'action - style bento compact */}
         <div className="flex gap-2">
           {githubUrl && (
             <a 
