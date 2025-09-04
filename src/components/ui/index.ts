@@ -21,3 +21,7 @@ export { LanguageTest } from './LanguageTest';
 // Skeleton components
 export { SkeletonWrapper } from './SkeletonWrapper';
 export type { SkeletonWrapperProps } from './SkeletonWrapper';
+
+// Animation components
+export { default as LogoLoop } from './LogoLoop';
+export type { LogoLoopProps, LogoItem } from './LogoLoop';

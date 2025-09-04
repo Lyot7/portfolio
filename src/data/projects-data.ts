@@ -2,12 +2,12 @@ import { ProjectCardProps } from '@/components/sections/ProjectCard';
 
 export const projectsData: ProjectCardProps[] = [
   {
-    title: "Portfolio Personnel",
-    description: "Site web portfolio moderne développé avec Next.js 15, TypeScript et Tailwind CSS. Architecture SOLID avec composants réutilisables et animations fluides.",
+    title: "Xulinos - Artisan Coutelier",
+    description: "Site web pour un artisan coutelier, avec une interface moderne et responsive. Réalisé en fin de première année de Master, ce site est le résultat d'une semaine de travail et d'échanges avec un client réel.",
     image: "/api/placeholder/400/300",
-    imageAlt: "Portfolio personnel - Capture d'écran",
+    imageAlt: "Xulinos - Artisan Coutelier - Capture d'écran",
     githubUrl: "https://github.com/votre-username/portfolio",
-    liveUrl: "https://votre-portfolio.vercel.app",
+    liveUrl: "https://xulinos.fr",
     technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
     estimatedTime: "2-3 semaines",
     date: "Décembre 2024"

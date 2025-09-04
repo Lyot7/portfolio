@@ -1,6 +1,10 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ExternalLink, Github, Calendar, Clock, Code, Globe, Image, FileText } from 'lucide-react';
+import LogoLoop from '../ui/LogoLoop';
+import { getProjectLogos } from '../../data/tech-logos';
+import { ProjectBentoSkeleton } from '../skeletons';
+import { useTranslations } from '../../hooks/useTranslations';
 
 export interface ProjectBentoProps {
   project: {
@@ -39,8 +43,8 @@ const createProjectCards = (project: ProjectBentoProps['project']) => [
     content: { github: project.githubUrl, live: project.liveUrl },
     icon: ExternalLink,
     color: '#060010',
-    // Mobile: col-start-1 row-start-2 col-span-2 row-span-2, Desktop: col-start-6 row-start-1 col-span-2 row-span-1
-    className: 'col-start-1 row-start-2 col-span-2 row-span-2 md:col-start-6 md:row-start-1 md:col-span-2 md:row-span-1',
+    // Mobile: col-start-3 row-start-2 row-span-2, Desktop: col-start-6 row-start-1 col-span-2 row-span-1
+    className: 'col-start-3 row-start-2 row-span-2 md:col-start-6 md:row-start-1 md:col-span-2 md:row-span-1',
     isLinks: true
   },
   {
@@ -49,8 +53,8 @@ const createProjectCards = (project: ProjectBentoProps['project']) => [
     content: project.image,
     icon: Image,
     color: '#060010',
-    // Mobile: col-start-3 row-start-2 row-span-2, Desktop: col-start-1 row-start-2 col-span-3 row-span-3
-    className: 'col-start-3 row-start-2 row-span-2 md:col-start-1 md:row-start-2 md:col-span-3 md:row-span-3',
+    // Mobile: col-start-1 row-start-2 col-span-2 row-span-2, Desktop: col-start-4 row-start-2 col-span-4 row-span-3
+    className: 'col-start-1 row-start-2 col-span-2 row-span-2 md:col-start-4 md:row-start-2 md:col-span-4 md:row-span-3',
     isImage: true
   },
   {
@@ -59,8 +63,8 @@ const createProjectCards = (project: ProjectBentoProps['project']) => [
     content: project.description,
     icon: FileText,
     color: '#060010',
-    // Mobile: col-start-1 row-start-4 col-span-3 row-span-2, Desktop: col-start-4 row-start-2 col-span-4 row-span-3
-    className: 'col-start-1 row-start-4 col-span-3 row-span-2 md:col-start-4 md:row-start-2 md:col-span-4 md:row-span-3',
+    // Mobile: col-start-1 row-start-4 col-span-3 row-span-2, Desktop: col-start-1 row-start-2 col-span-3 row-span-3
+    className: 'col-start-1 row-start-4 col-span-3 row-span-2 md:col-start-1 md:row-start-2 md:col-span-3 md:row-span-3',
     isDescription: true
   },
   {
@@ -97,8 +101,19 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
   const gridRef = useRef<HTMLDivElement>(null);
   const isMobile = useMobileDetection();
   const shouldDisableAnimations = disableAnimations || isMobile;
+  const { isLoading } = useTranslations();
+  const [mounted, setMounted] = useState(false);
   
   const projectCards = createProjectCards(project);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Display skeleton ONLY during real translation loading
+  if (isLoading || !mounted) {
+    return <ProjectBentoSkeleton />;
+  }
 
   // Fonction pour gérer le tilt des cartes
   const handleCardTilt = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -158,19 +173,38 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(6, 1fr);
-            gap: 0.5rem;
+            gap: 1rem;
             width: 100%;
-            max-width: 1200px;
+            max-width: 100vw;
             margin: 0 auto;
-            min-height: 500px;
+            min-height: 400px;
+            max-height: 80vh;
           }
           
           @media (min-width: 768px) {
             .card-responsive {
               grid-template-columns: repeat(7, 1fr);
               grid-template-rows: repeat(5, 1fr);
-              gap: 0.5rem;
-              min-height: 400px;
+              gap: 0.8rem;
+              min-height: 320px;
+              max-height: 75vh;
+              max-width: 95vw;
+            }
+          }
+          
+          @media (min-width: 1024px) {
+            .card-responsive {
+              max-width: 90vw;
+              min-height: 350px;
+              max-height: 70vh;
+            }
+          }
+          
+          @media (min-width: 1280px) {
+            .card-responsive {
+              max-width: 85vw;
+              min-height: 380px;
+              max-height: 65vh;
             }
           }
           
@@ -204,23 +238,30 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
           /* Halo vert sur les cartes */
           .card {
             transition: all 0.3s ease;
+            background: rgba(6, 0, 16, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
           }
           
           .card:hover {
             box-shadow: 0 0 20px rgba(34, 197, 94, 0.3), 0 0 40px rgba(34, 197, 94, 0.1);
+            background: rgba(6, 0, 16, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
           }
         `}
       </style>
       
       <div className="w-full">
-        <div className="bento-section grid gap-2 p-4 select-none relative mx-auto" style={{ fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.5rem)' }}>
+        <div className="bento-section grid gap-2 p-2 sm:p-3 md:p-4 select-none relative mx-auto" style={{ fontSize: 'clamp(0.9rem, 0.8rem + 0.4vw, 1.3rem)' }}>
           <div className="card-responsive">
             {projectCards.map((card, index) => {
               const IconComponent = card.icon;
-              const baseClassName = `card flex flex-col justify-between relative p-5 rounded-[20px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${enableBorderGlow ? 'card--border-glow' : ''} ${card.className}`;
+              const baseClassName = `card flex flex-col justify-between relative ${card.isImage ? 'p-0' : 'p-2'} rounded-[20px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${enableBorderGlow ? 'card--border-glow' : ''} ${card.className}`;
 
               const cardStyle = {
-                backgroundColor: card.color || 'var(--background-dark)',
+                backgroundColor: 'rgba(6, 0, 16, 0.5)',
+                backdropFilter: 'blur(10px)',
                 borderColor: 'var(--border-color)',
                 color: 'var(--white)',
                 '--glow-x': '50%',
@@ -237,24 +278,17 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                   onMouseMove={handleCardTilt}
                   onMouseLeave={handleCardReset}
                 >
-                  {/* Header avec icône et titre */}
-                  <div className="card__header flex items-center gap-3 relative text-white mb-3">
-                    <IconComponent className="h-5 w-5 text-green-400" />
-                    <h4 className="card__title font-medium text-sm m-0 text-green-400">
-                      {card.title}
-                    </h4>
-                  </div>
 
                   {/* Contenu de la carte */}
-                  <div className="card__content flex flex-col relative text-white">
+                  <div className="card__content flex flex-col relative text-white h-full">
                     {card.isTitle ? (
-                      <div className="mt-auto">
-                        <h2 className="text-2xl md:text-3xl font-bold text-white leading-tight">
+                      <div className="flex items-center justify-center h-full">
+                        <h2 className="text-2xl md:text-3xl font-bold text-white leading-tight text-center">
                           {card.content as string}
                         </h2>
                       </div>
                     ) : card.isImage ? (
-                      <div className="relative h-full overflow-hidden rounded-lg">
+                      <div className="relative h-full overflow-hidden">
                         <img
                           src={card.content as string}
                           alt={project.imageAlt}
@@ -263,24 +297,22 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                       </div>
                     ) : card.isTechnologies ? (
-                      <div className="flex flex-wrap gap-2">
-                        {(card.content as string[]).map((tech, techIndex) => (
-                          <span
-                            key={techIndex}
-                            className="px-3 py-2 text-sm bg-green-500/20 text-green-300 rounded-full border border-green-500/30"
-                          >
-                            {tech}
-                          </span>
-                        ))}
+                      <div className="flex items-center justify-center h-full">
+                        <LogoLoop
+                          logos={getProjectLogos(card.content as string[])}
+                          speed={0.8}
+                          direction="left"
+                          className="w-full h-12"
+                        />
                       </div>
                     ) : card.isDescription ? (
-                      <div className="mt-auto">
-                        <p className="text-sm text-white leading-relaxed">
+                      <div className="flex items-center justify-center h-full">
+                        <p className="text-sm text-white leading-relaxed text-center">
                           {card.content as string}
                         </p>
                       </div>
                     ) : card.isLinks ? (
-                      <div className="flex flex-col gap-3 mt-auto">
+                      <div className="flex flex-col gap-1 h-full p-1">
                         {card.content && typeof card.content === 'object' && (
                           <>
                             {card.content.github && (
@@ -288,10 +320,10 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                                 href={card.content.github} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center gap-2 h-10 px-4 text-sm font-medium rounded-md transition-all duration-200 border border-green-500/30 bg-transparent text-green-300 hover:bg-green-500/20 hover:border-green-400/50"
+                                className="group flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-all duration-200 border border-green-500/40 bg-green-500/10 text-green-300 hover:bg-green-500/20 hover:border-green-400/60 rounded-lg"
                               >
-                                <Github className="h-4 w-4" />
-                                Voir le code
+                                <Github className="h-4 w-4 transition-transform duration-200 group-hover:rotate-12" />
+                                <span>Code</span>
                               </a>
                             )}
                             {card.content.live && (
@@ -299,18 +331,18 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                                 href={card.content.live} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center gap-2 h-10 px-4 text-sm font-medium rounded-md transition-all duration-200 bg-green-600 hover:bg-green-700 text-white"
+                                className="group flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-all duration-200 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg shadow-green-500/20 rounded-lg"
                               >
-                                <Globe className="h-4 w-4" />
-                                Voir le projet
+                                <Globe className="h-4 w-4 transition-transform duration-200 group-hover:rotate-12" />
+                                <span>Démo</span>
                               </a>
                             )}
                           </>
                         )}
                       </div>
                     ) : (
-                      <div className="mt-auto">
-                        <p className="text-lg font-medium text-white">
+                      <div className="flex items-center justify-center h-full">
+                        <p className="text-lg font-medium text-white text-center">
                           {card.content as string}
                         </p>
                       </div>
