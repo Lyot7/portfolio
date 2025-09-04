@@ -21,20 +21,9 @@ export const ProjectsBentoGrid: React.FC<ProjectBentoGridProps> = ({
   className = ''
 }) => {
   return (
-    <div className={`w-full space-y-16 ${className}`}>
+    <div className={`w-full space-y-12 ${className}`}>
       {projects.map((project, index) => (
         <div key={index} className="w-full">
-          {/* Titre du projet au-dessus du bento */}
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-4">
-              {project.title}
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {project.description}
-            </p>
-          </div>
-          
-          {/* Bento du projet */}
           <ProjectBento
             project={project}
             enableBorderGlow={true}
