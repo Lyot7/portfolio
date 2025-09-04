@@ -21,7 +21,7 @@ export interface ProjectBentoProps {
 
 const DEFAULT_GLOW_COLOR = '34, 197, 94';
 
-// Créer les cartes caractéristiques pour un projet avec disposition bento optimisée
+// Créer les cartes caractéristiques pour un projet avec disposition bento selon le code fourni
 const createProjectCards = (project: ProjectBentoProps['project']) => [
   {
     id: 'title',
@@ -29,17 +29,28 @@ const createProjectCards = (project: ProjectBentoProps['project']) => [
     content: project.title,
     icon: FileText,
     color: '#060010',
-    gridArea: '1 / 1 / 2 / 3', // span 2 colonnes, 1 ligne
-    aspectRatio: '2/1'
+    // Mobile: col-start-1 row-start-1 col-span-3, Desktop: col-start-1 row-start-1 col-span-5 row-span-1
+    className: 'col-start-1 row-start-1 col-span-3 md:col-start-1 md:row-start-1 md:col-span-5 md:row-span-1',
+    isTitle: true
+  },
+  {
+    id: 'links',
+    title: 'Liens en ligne & Github',
+    content: { github: project.githubUrl, live: project.liveUrl },
+    icon: ExternalLink,
+    color: '#060010',
+    // Mobile: col-start-1 row-start-2 col-span-2 row-span-2, Desktop: col-start-6 row-start-1 col-span-2 row-span-1
+    className: 'col-start-1 row-start-2 col-span-2 row-span-2 md:col-start-6 md:row-start-1 md:col-span-2 md:row-span-1',
+    isLinks: true
   },
   {
     id: 'image',
-    title: 'Aperçu',
+    title: 'Image (Full size)',
     content: project.image,
     icon: Image,
     color: '#060010',
-    gridArea: '1 / 3 / 3 / 5', // span 2 colonnes, 2 lignes
-    aspectRatio: '1/1',
+    // Mobile: col-start-3 row-start-2 row-span-2, Desktop: col-start-1 row-start-2 col-span-3 row-span-3
+    className: 'col-start-3 row-start-2 row-span-2 md:col-start-1 md:row-start-2 md:col-span-3 md:row-span-3',
     isImage: true
   },
   {
@@ -48,58 +59,19 @@ const createProjectCards = (project: ProjectBentoProps['project']) => [
     content: project.description,
     icon: FileText,
     color: '#060010',
-    gridArea: '2 / 1 / 3 / 3', // span 2 colonnes, 1 ligne
-    aspectRatio: '2/1'
+    // Mobile: col-start-1 row-start-4 col-span-3 row-span-2, Desktop: col-start-4 row-start-2 col-span-4 row-span-3
+    className: 'col-start-1 row-start-4 col-span-3 row-span-2 md:col-start-4 md:row-start-2 md:col-span-4 md:row-span-3',
+    isDescription: true
   },
   {
     id: 'technologies',
-    title: 'Technologies',
+    title: 'Logos technos',
     content: project.technologies,
     icon: Code,
     color: '#060010',
-    gridArea: '3 / 1 / 4 / 3', // span 2 colonnes, 1 ligne
-    aspectRatio: '2/1',
+    // Mobile: col-start-1 row-start-6 col-span-3, Desktop: col-start-1 row-start-5 col-span-7 row-span-1
+    className: 'col-start-1 row-start-6 col-span-3 md:col-start-1 md:row-start-5 md:col-span-7 md:row-span-1',
     isTechnologies: true
-  },
-  {
-    id: 'time',
-    title: 'Temps estimé',
-    content: project.estimatedTime,
-    icon: Clock,
-    color: '#060010',
-    gridArea: '3 / 3 / 4 / 4', // span 1 colonne, 1 ligne
-    aspectRatio: '1/1'
-  },
-  {
-    id: 'date',
-    title: 'Date de réalisation',
-    content: project.date,
-    icon: Calendar,
-    color: '#060010',
-    gridArea: '3 / 4 / 4 / 5', // span 1 colonne, 1 ligne
-    aspectRatio: '1/1'
-  },
-  {
-    id: 'github',
-    title: 'Code source',
-    content: project.githubUrl,
-    icon: Github,
-    color: '#060010',
-    gridArea: '4 / 1 / 5 / 3', // span 2 colonnes, 1 ligne
-    aspectRatio: '2/1',
-    isLink: true,
-    linkType: 'github'
-  },
-  {
-    id: 'live',
-    title: 'Voir le projet',
-    content: project.liveUrl,
-    icon: Globe,
-    color: '#060010',
-    gridArea: '4 / 3 / 5 / 5', // span 2 colonnes, 1 ligne
-    aspectRatio: '2/1',
-    isLink: true,
-    linkType: 'live'
   }
 ];
 
@@ -184,46 +156,21 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
           
           .card-responsive {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(6, 1fr);
             gap: 0.5rem;
             width: 100%;
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            aspect-ratio: 4/3;
+            min-height: 500px;
           }
           
-          @media (max-width: 1200px) {
+          @media (min-width: 768px) {
             .card-responsive {
-              max-width: 900px;
+              grid-template-columns: repeat(7, 1fr);
+              grid-template-rows: repeat(5, 1fr);
               gap: 0.5rem;
-            }
-          }
-          
-          @media (max-width: 1024px) {
-            .card-responsive {
-              max-width: 800px;
-              gap: 0.4rem;
-            }
-          }
-          
-          @media (max-width: 768px) {
-            .card-responsive {
-              grid-template-columns: repeat(2, 1fr);
-              grid-template-rows: repeat(6, 1fr);
-              max-width: 500px;
-              aspect-ratio: 2/3;
-              gap: 0.4rem;
-            }
-          }
-          
-          @media (max-width: 480px) {
-            .card-responsive {
-              grid-template-columns: 1fr;
-              grid-template-rows: repeat(8, 1fr);
-              max-width: 100%;
-              aspect-ratio: 1/2;
-              gap: 0.3rem;
+              min-height: 400px;
             }
           }
           
@@ -270,13 +217,12 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
           <div className="card-responsive">
             {projectCards.map((card, index) => {
               const IconComponent = card.icon;
-              const baseClassName = `card flex flex-col justify-between relative p-5 rounded-[20px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${enableBorderGlow ? 'card--border-glow' : ''}`;
+              const baseClassName = `card flex flex-col justify-between relative p-5 rounded-[20px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${enableBorderGlow ? 'card--border-glow' : ''} ${card.className}`;
 
               const cardStyle = {
                 backgroundColor: card.color || 'var(--background-dark)',
                 borderColor: 'var(--border-color)',
                 color: 'var(--white)',
-                gridArea: card.gridArea,
                 '--glow-x': '50%',
                 '--glow-y': '50%',
                 '--glow-intensity': '0',
@@ -301,7 +247,13 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
 
                   {/* Contenu de la carte */}
                   <div className="card__content flex flex-col relative text-white">
-                    {card.isImage ? (
+                    {card.isTitle ? (
+                      <div className="mt-auto">
+                        <h2 className="text-2xl md:text-3xl font-bold text-white leading-tight">
+                          {card.content as string}
+                        </h2>
+                      </div>
+                    ) : card.isImage ? (
                       <div className="relative h-full overflow-hidden rounded-lg">
                         <img
                           src={card.content as string}
@@ -321,28 +273,45 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                           </span>
                         ))}
                       </div>
-                    ) : card.isLink ? (
+                    ) : card.isDescription ? (
                       <div className="mt-auto">
-                        {card.content && (
-                          <a 
-                            href={card.content as string} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className={`inline-flex items-center justify-center gap-2 h-10 px-4 text-sm font-medium rounded-md transition-all duration-200 ${
-                              card.linkType === 'github' 
-                                ? 'border border-green-500/30 bg-transparent text-green-300 hover:bg-green-500/20 hover:border-green-400/50'
-                                : 'bg-green-600 hover:bg-green-700 text-white'
-                            }`}
-                          >
-                            <IconComponent className="h-4 w-4" />
-                            {card.linkType === 'github' ? 'Voir le code' : 'Voir le projet'}
-                          </a>
+                        <p className="text-sm text-white leading-relaxed">
+                          {card.content as string}
+                        </p>
+                      </div>
+                    ) : card.isLinks ? (
+                      <div className="flex flex-col gap-3 mt-auto">
+                        {card.content && typeof card.content === 'object' && (
+                          <>
+                            {card.content.github && (
+                              <a 
+                                href={card.content.github} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center gap-2 h-10 px-4 text-sm font-medium rounded-md transition-all duration-200 border border-green-500/30 bg-transparent text-green-300 hover:bg-green-500/20 hover:border-green-400/50"
+                              >
+                                <Github className="h-4 w-4" />
+                                Voir le code
+                              </a>
+                            )}
+                            {card.content.live && (
+                              <a 
+                                href={card.content.live} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center gap-2 h-10 px-4 text-sm font-medium rounded-md transition-all duration-200 bg-green-600 hover:bg-green-700 text-white"
+                              >
+                                <Globe className="h-4 w-4" />
+                                Voir le projet
+                              </a>
+                            )}
+                          </>
                         )}
                       </div>
                     ) : (
                       <div className="mt-auto">
                         <p className="text-lg font-medium text-white">
-                          {card.content}
+                          {card.content as string}
                         </p>
                       </div>
                     )}
