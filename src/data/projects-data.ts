@@ -3,7 +3,7 @@ import { ProjectCardProps } from '@/components/sections/ProjectCard';
 export const projectsData: ProjectCardProps[] = [
   {
     title: "Xulinos - Artisan Coutelier",
-    description: `<p>Site web pour un <strong>artisan coutelier</strong>, après une semaine de travail et d'échanges avec un client réel.</p>
+    description: `<p>Site web pour un <strong>artisan coutelier</strong>, après une semaine de travail et d'échanges.</p>
 <p>Fonctionnalités principales :</p>
 <ul>
   <li>Landing page optimisée SEO</li>
