@@ -29,9 +29,10 @@ export function useMediaQuery(query: string): boolean {
 
 /**
  * Hook spécialisé pour détecter les écrans mobiles
+ * Utilise le breakpoint à 450px comme demandé
  */
 export function useIsMobile(): boolean {
-  return useMediaQuery('(max-width: 767px)');
+  return useMediaQuery('(max-width: 449px)');
 }
 
 /**

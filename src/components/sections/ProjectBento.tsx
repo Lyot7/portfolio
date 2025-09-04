@@ -24,7 +24,7 @@ export interface ProjectBentoProps {
 
 const DEFAULT_GLOW_COLOR = '34, 197, 94';
 
-// Créer les cartes caractéristiques pour un projet avec disposition bento
+// Créer les cartes caractéristiques pour un projet avec disposition bentod
 const createProjectCards = (project: ProjectBentoProps['project']) => [
   {
     id: 'title',

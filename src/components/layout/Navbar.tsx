@@ -89,17 +89,19 @@ export function Navbar() {
 
         {/* Language Selector + Theme Toggle + Menu mobile (hamburger) à droite */}
         <div className="flex items-center gap-3">
-          {/* Language Selector */}
-          <div className="flex-shrink-0">
-            <LanguageSelector />
-          </div>
+          {/* Language Selector + Theme Toggle - Desktop uniquement (cachés en dessous de 450px) */}
+          {!isMobile && (
+            <>
+              <div className="flex-shrink-0">
+                <LanguageSelector />
+              </div>
+              <div className="flex-shrink-0">
+                <ThemeToggle />
+              </div>
+            </>
+          )}
           
-          {/* Theme Toggle */}
-          <div className="flex-shrink-0">
-            <ThemeToggle />
-          </div>
-          
-          {/* Menu mobile */}
+          {/* Menu mobile - Visible uniquement en dessous de 450px */}
           <MobileMenu navItems={navItems} currentPath={pathname} />
         </div>
       </nav>
@@ -165,33 +167,52 @@ function MobileMenu({ navItems, currentPath }: { navItems: Array<{name: string, 
               ease: "easeOut",
               opacity: { duration: 0.15 }
             }}
-            className="absolute top-full right-0 mt-2 w-48 bg-background border border-border rounded-xl shadow-xl z-50"
+            className="absolute top-full right-0 mt-2 w-64 bg-background border border-border rounded-xl shadow-xl z-50"
           >
-            <div className="py-2">
-              {navItems.map((item) => {
-                const isActive = currentPath === item.href;
+            <div className="py-4">
+              {/* Contrôles en haut du menu mobile */}
+              <div className="flex items-center justify-between px-4 mb-4">
+                {/* Bouton Langue à gauche */}
+                <div className="flex items-center">
+                  <LanguageSelector />
+                </div>
                 
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className={cn(
-                      "block px-4 py-3 text-xs font-semibold tracking-wider uppercase transition-all duration-200",
-                      "hover:bg-muted focus-visible:outline-none focus-visible:bg-muted",
-                      "transform hover:translate-x-1",
-                      isActive 
-                        ? "text-primary bg-primary/10" 
-                        : "text-foreground"
-                    )}
-                  >
-                    {item.name}
-                    {isActive && (
-                      <div className="w-1 h-1 bg-primary rounded-full ml-2 inline-block" />
-                    )}
-                  </Link>
-                );
-              })}
+                {/* Bouton Thème à droite */}
+                <div className="flex items-center">
+                  <ThemeToggle />
+                </div>
+              </div>
+
+              {/* Séparateur visuel */}
+              <div className="border-t border-border/30 mb-4"></div>
+
+              {/* Navigation mobile */}
+              <div className="px-2">
+                {navItems.map((item) => {
+                  const isActive = currentPath === item.href;
+                  
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "block px-4 py-3 text-xs font-semibold tracking-wider uppercase transition-all duration-200 rounded-lg",
+                        "hover:bg-muted focus-visible:outline-none focus-visible:bg-muted",
+                        "transform hover:translate-x-1",
+                        isActive 
+                          ? "text-primary bg-primary/10" 
+                          : "text-foreground"
+                      )}
+                    >
+                      {item.name}
+                      {isActive && (
+                        <div className="w-1 h-1 bg-primary rounded-full ml-2 inline-block" />
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
           </motion.div>
         )}
