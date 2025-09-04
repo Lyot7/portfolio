@@ -24,14 +24,18 @@ export function Logo({ className = "", showText = true, size = "md" }: LogoProps
 
   useEffect(() => {
     setMounted(true);
-    
-    // Simuler le temps de chargement de l'image et de la typo
-    const timer = setTimeout(() => {
-      setImageLoaded(true);
-    }, 150); // 150ms pour le chargement de l'image et de la typo
-
-    return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    // Timeout de fallback pour éviter le chargement infini
+    const fallbackTimer = setTimeout(() => {
+      setImageLoaded(true);
+    }, 500); // 500ms maximum pour le logo
+
+    return () => clearTimeout(fallbackTimer);
+  }, [mounted]);
 
   const sizeClasses = {
     sm: 'h-6 w-6',
@@ -45,7 +49,15 @@ export function Logo({ className = "", showText = true, size = "md" }: LogoProps
     lg: 'text-2xl'
   };
 
-  // Afficher le skeleton pendant le chargement de l'image et de la typo
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
+  const handleImageError = () => {
+    setImageLoaded(true); // Afficher quand même en cas d'erreur
+  };
+
+  // Afficher le skeleton pendant le chargement de l'image
   if (!imageLoaded || !mounted) {
     return <LogoSkeleton />;
   }
@@ -67,6 +79,8 @@ export function Logo({ className = "", showText = true, size = "md" }: LogoProps
           height={32}
           className="w-full h-full object-contain"
           priority
+          onLoad={handleImageLoad}
+          onError={handleImageError}
         />
       </div>
 

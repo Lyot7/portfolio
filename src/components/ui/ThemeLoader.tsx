@@ -15,12 +15,8 @@ export function ThemeLoader() {
 
   useEffect(() => {
     if (mounted) {
-      // Transition plus rapide pour éviter les flashs
-      const timer = setTimeout(() => {
-        setIsVisible(false);
-      }, 50); // Réduit de 100ms à 50ms
-      
-      return () => clearTimeout(timer);
+      // Transition immédiate quand le thème est monté
+      setIsVisible(false);
     }
   }, [mounted]);
 

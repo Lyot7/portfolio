@@ -1,5 +1,6 @@
 import React from 'react';
 import { ExternalLink, Github } from 'lucide-react';
+import { ProjectImage } from '@/components/ui';
 
 export interface ProjectCardProps {
   title: string;
@@ -44,11 +45,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       </div>
 
       {/* Image du projet - plus compacte pour le style bento */}
-      <div className="relative h-24 overflow-hidden rounded-lg mb-3">
-        <img
+      <div className="relative h-24 overflow-hidden rounded-lg mb-3" style={{ minHeight: '96px' }}>
+        <ProjectImage
           src={image}
           alt={imageAlt}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          width={300}
+          height={96}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
       </div>

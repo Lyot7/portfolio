@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/buttons';
 import { AnimatedButton } from '@/components/ui';
 import { ArrowRight, Download, Eye } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useTranslations } from '@/hooks/useTranslations';
+import { useTranslations, useComponentLoading } from '@/hooks';
 import { HeroSkeleton } from '@/components/skeletons';
 
 // Fonction pour calculer les années d'expérience depuis le 1er septembre 2021
@@ -27,17 +27,16 @@ function calculateYearsOfExperience(): number {
 }
 
 export function HeroSection() {
-  const { t, translateWithVars, isLoading } = useTranslations();
+  const { t, translateWithVars } = useTranslations();
+  const { isLoading } = useComponentLoading();
   const [yearsOfExperience, setYearsOfExperience] = useState<number>(0);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     setYearsOfExperience(calculateYearsOfExperience());
   }, []);
 
   // Afficher le skeleton pendant le chargement des traductions
-  if (isLoading || !mounted) {
+  if (isLoading) {
     return <HeroSkeleton />;
   }
 
@@ -67,39 +66,43 @@ export function HeroSection() {
             {t('home.hero.description')}
           </p>
 
-          {/* Statistiques rapides avec fond pour meilleure lisibilité */}
-          <div className="flex flex-wrap gap-4 mb-10">
-            <div className="flex items-center gap-2 bg-card/40 backdrop-blur-sm border border-border/30 rounded-full px-4 py-2">
-              <div className="w-2 h-2 bg-primary rounded-full"></div>
-              <span className="text-foreground text-sm font-medium">
-                {mounted ? translateWithVars('home.hero.stats.experience', { years: yearsOfExperience }) : translateWithVars('home.hero.stats.experience', { years: 3 })}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 bg-card/40 backdrop-blur-sm border border-border/30 rounded-full px-4 py-2">
-              <div className="w-2 h-2 bg-primary rounded-full"></div>
-              <span className="text-foreground text-sm font-medium">{t('home.hero.stats.business')}</span>
-            </div>
-            <div className="flex items-center gap-2 bg-card/40 backdrop-blur-sm border border-border/30 rounded-full px-4 py-2">
-              <div className="w-2 h-2 bg-primary rounded-full"></div>
-              <span className="text-foreground text-sm font-medium">{t('home.hero.stats.interfaces')}</span>
-            </div>
-          </div>
-
-          {/* Boutons d'action */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-12">
-            <Link href="/contact" className="w-full sm:w-auto">
-              <AnimatedButton size="lg" className="group w-full sm:w-auto">
-                {t('home.hero.cta.contact')}
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-              </AnimatedButton>
-            </Link>
+          {/* Conteneur flex en colonne avec inversion sur mobile très petit */}
+          <div className="flex flex-col gap-4 mb-12 max-[450px]:flex-col-reverse">
             
-            <Link href="/projets" className="w-full sm:w-auto">
-              <Button variant="secondary" size="lg" className="group w-full sm:w-auto">
-                {t('home.hero.cta.projects')}
-                <Eye className="w-5 h-5 transition-transform group-hover:scale-110" />
-              </Button>
-            </Link>
+            {/* Statistiques rapides avec fond pour meilleure lisibilité */}
+            <div className="flex flex-wrap gap-4">
+              <div className="flex items-center gap-2 bg-card/40 backdrop-blur-sm border border-border/30 rounded-full px-4 py-2">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
+                <span className="text-foreground text-sm font-medium">
+                  {translateWithVars('home.hero.stats.experience', { years: yearsOfExperience })}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 bg-card/40 backdrop-blur-sm border border-border/30 rounded-full px-4 py-2">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
+                <span className="text-foreground text-sm font-medium">{t('home.hero.stats.business')}</span>
+              </div>
+              <div className="flex items-center gap-2 bg-card/40 backdrop-blur-sm border border-border/30 rounded-full px-4 py-2">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
+                <span className="text-foreground text-sm font-medium">{t('home.hero.stats.interfaces')}</span>
+              </div>
+            </div>
+
+            {/* Boutons d'action */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/contact" className="w-full sm:w-auto">
+                <AnimatedButton size="lg" className="group w-full sm:w-auto">
+                  {t('home.hero.cta.contact')}
+                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                </AnimatedButton>
+              </Link>
+              
+              <Link href="/projets" className="w-full sm:w-auto">
+                <Button variant="secondary" size="lg" className="group w-full sm:w-auto">
+                  {t('home.hero.cta.projects')}
+                  <Eye className="w-5 h-5 transition-transform group-hover:scale-110" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

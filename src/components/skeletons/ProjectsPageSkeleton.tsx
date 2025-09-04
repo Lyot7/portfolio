@@ -1,15 +1,34 @@
 export function ProjectsPageSkeleton() {
   return (
-    <section className="min-h-screen flex items-center justify-center pt-28 sm:pt-32 md:pt-36 lg:pt-40 xl:pt-44 pb-20 px-6 sm:px-8 lg:px-16">
-      <div className="max-w-4xl mx-auto text-center">
-        {/* Titre principal */}
-        <div className="w-48 h-16 sm:w-64 sm:h-20 lg:w-80 lg:h-24 bg-muted/20 rounded-lg animate-pulse mx-auto mb-6"></div>
-        
-        {/* Sous-titre */}
-        <div className="w-80 h-6 sm:w-96 sm:h-8 lg:w-[28rem] lg:h-10 bg-muted/20 rounded-lg animate-pulse mx-auto mb-8"></div>
-        
-        {/* Texte de développement */}
-        <div className="w-64 h-5 sm:w-80 sm:h-6 bg-muted/20 rounded-lg animate-pulse mx-auto"></div>
+    <section className="min-h-screen pt-24 sm:pt-28 md:pt-32 lg:pt-36 xl:pt-40 pb-16 px-4 sm:px-6 lg:px-8">
+      {/* Skeleton pour la grille de projets - Correspond à la structure réelle */}
+      <div className="w-full px-4">
+        {/* Grille de projets skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Projet 1 */}
+          <div className="bg-muted/20 rounded-xl p-6 animate-pulse">
+            <div className="h-6 w-3/4 bg-muted/30 rounded mb-4"></div>
+            <div className="h-4 w-full bg-muted/30 rounded mb-2"></div>
+            <div className="h-4 w-5/6 bg-muted/30 rounded mb-4"></div>
+            <div className="h-8 w-24 bg-muted/30 rounded"></div>
+          </div>
+          
+          {/* Projet 2 */}
+          <div className="bg-muted/20 rounded-xl p-6 animate-pulse">
+            <div className="h-6 w-2/3 bg-muted/30 rounded mb-4"></div>
+            <div className="h-4 w-full bg-muted/30 rounded mb-2"></div>
+            <div className="h-4 w-4/5 bg-muted/30 rounded mb-4"></div>
+            <div className="h-8 w-20 bg-muted/30 rounded"></div>
+          </div>
+          
+          {/* Projet 3 */}
+          <div className="bg-muted/20 rounded-xl p-6 animate-pulse">
+            <div className="h-6 w-3/5 bg-muted/30 rounded mb-4"></div>
+            <div className="h-4 w-full bg-muted/30 rounded mb-2"></div>
+            <div className="h-4 w-3/4 bg-muted/30 rounded mb-4"></div>
+            <div className="h-8 w-28 bg-muted/30 rounded"></div>
+          </div>
+        </div>
       </div>
     </section>
   );

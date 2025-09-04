@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ExternalLink, Github } from 'lucide-react';
+import { ProjectImage } from '@/components/ui';
 
 export interface BentoCardProps {
   color?: string;
@@ -730,14 +731,18 @@ const ProjectsBento: React.FC<BentoProps> = ({
                   enableMagnetism={enableMagnetism}
                 >
                   {/* Image du projet */}
-                  <div className="relative h-20 overflow-hidden rounded-lg mb-3">
-                    <img
-                      src={card.image}
-                      alt={card.imageAlt}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  </div>
+                  {card.image && (
+                    <div className="relative h-20 overflow-hidden rounded-lg mb-3" style={{ minHeight: '80px' }}>
+                      <ProjectImage
+                        src={card.image}
+                        alt={card.imageAlt || card.title || 'Project image'}
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        width={300}
+                        height={80}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    </div>
+                  )}
 
                   <div className="card__header flex justify-between gap-3 relative text-white mb-2">
                     <span className="card__label text-base text-green-400">{card.label}</span>
@@ -919,11 +924,13 @@ const ProjectsBento: React.FC<BentoProps> = ({
               >
                 {/* Image du projet */}
                 {card.image && (
-                  <div className="relative h-20 overflow-hidden rounded-lg mb-3">
-                    <img
+                  <div className="relative h-20 overflow-hidden rounded-lg mb-3" style={{ minHeight: '80px' }}>
+                    <ProjectImage
                       src={card.image}
-                      alt={card.imageAlt || card.title}
+                      alt={card.imageAlt || card.title || 'Project image'}
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      width={300}
+                      height={80}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   </div>

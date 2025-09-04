@@ -7,6 +7,10 @@ export type { AnimatedButtonProps } from './AnimatedButton';
 // Branding components
 export { Logo, LogoIcon } from './Logo';
 
+// Image components
+export { ProjectImage } from './ProjectImage';
+export { ProjectWithSkeleton } from './ProjectWithSkeleton';
+
 // Effects components
 export { default as ClickSpark } from './ClickSpark';
 

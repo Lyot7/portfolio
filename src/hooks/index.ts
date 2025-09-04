@@ -6,3 +6,6 @@ export { useTranslations } from './useTranslations';
 // Hooks spécialisés
 export { useForm } from './useForm';
 export type { FormState, FormField, UseFormReturn, UseFormOptions } from './useForm';
+
+// Hooks de chargement
+export { useComponentLoading, useImageLoading, useDataLoading } from './useComponentLoading';

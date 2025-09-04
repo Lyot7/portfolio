@@ -29,12 +29,12 @@ export function HeroSkeleton({ className }: HeroSkeletonProps) {
             </div>
           </div>
 
-          {/* Titre principal skeleton - Même hauteur et espacement */}
-          <div className="mb-6 space-y-2">
-            {/* Première ligne du titre */}
-            <div className="h-16 sm:h-20 lg:h-24 xl:h-28 bg-muted/20 rounded-lg animate-pulse" />
+          {/* Titre principal skeleton - Hauteurs plus réalistes basées sur les tailles de texte */}
+          <div className="mb-6 space-y-3">
+            {/* Première ligne du titre - Plus réaliste pour text-4xl à text-7xl */}
+            <div className="h-12 sm:h-14 lg:h-16 xl:h-20 bg-muted/20 rounded-lg animate-pulse" />
             {/* Deuxième ligne du titre (plus courte) */}
-            <div className="h-16 sm:h-20 lg:h-24 xl:h-28 bg-muted/20 rounded-lg animate-pulse w-4/5" />
+            <div className="h-12 sm:h-14 lg:h-16 xl:h-20 bg-muted/20 rounded-lg animate-pulse w-4/5" />
           </div>
 
           {/* Description skeleton - Même largeur et hauteur */}

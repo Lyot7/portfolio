@@ -1,20 +1,15 @@
 "use client";
 
-import { useState, useEffect } from 'react';
 import { ContactForm } from '@/components/sections/ContactForm';
 import { ContactPageSkeleton } from '@/components/skeletons';
-import { useTranslations } from '@/hooks/useTranslations';
+import { useTranslations, useComponentLoading } from '@/hooks';
 
 export default function ContactPage() {
-  const { t, isLoading } = useTranslations();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const { t } = useTranslations();
+  const { isLoading } = useComponentLoading();
 
   // Afficher le skeleton pendant le chargement des traductions
-  if (isLoading || !mounted) {
+  if (isLoading) {
     return <ContactPageSkeleton />;
   }
 

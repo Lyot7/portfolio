@@ -1,20 +1,15 @@
 "use client";
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useTranslations } from '@/hooks/useTranslations';
+import { useTranslations, useComponentLoading } from '@/hooks';
 import { NavigationSkeleton } from '@/components/skeletons';
 
 export function Navigation() {
-  const { t, isLoading } = useTranslations();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const { t } = useTranslations();
+  const { isLoading } = useComponentLoading();
 
   // Afficher le skeleton pendant le chargement des traductions
-  if (isLoading || !mounted) {
+  if (isLoading) {
     return <NavigationSkeleton />;
   }
 

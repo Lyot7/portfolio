@@ -1,21 +1,16 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useTranslations } from '@/hooks/useTranslations';
+import { useTranslations, useComponentLoading } from '@/hooks';
 import { ProjectsPageSkeleton } from '@/components/skeletons';
 import { ProjectBentoGrid } from '@/components/sections';
 import { projectsData } from '@/data/projects-data';
 
 export default function ProjetsPage() {
   const { t } = useTranslations();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const { isLoading } = useComponentLoading();
 
   // Afficher le skeleton pendant le chargement des traductions
-  if (!mounted) {
+  if (isLoading) {
     return <ProjectsPageSkeleton />;
   }
 

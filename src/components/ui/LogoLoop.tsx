@@ -21,11 +21,45 @@ const LogoLoop: React.FC<LogoLoopProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 500;
+    }
+    return false;
+  });
+
+  // Détection de la largeur d'écran pour affichage mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      const newIsMobile = window.innerWidth < 500;
+      const wasMobile = isMobile;
+      
+      // Si on change de mode (desktop ↔ mobile), réinitialiser l'état
+      if (newIsMobile !== wasMobile) {
+        setIsAnimating(false);
+        // Forcer un re-render pour nettoyer l'animation
+        if (containerRef.current) {
+          containerRef.current.style.transform = 'translateX(0)';
+        }
+      }
+      
+      setIsMobile(newIsMobile);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [isMobile]);
 
   useEffect(() => {
+    // Ne jamais lancer l'animation sur mobile
+    if (isMobile) return;
     if (!containerRef.current || logos.length === 0) return;
 
+    // Réinitialiser la position du conteneur au début
     const container = containerRef.current;
+    container.style.transform = 'translateX(0)';
     let animationId: number;
 
     const startAnimation = () => {
@@ -130,7 +164,7 @@ const LogoLoop: React.FC<LogoLoopProps> = ({
       }
       setIsAnimating(false);
     };
-  }, [speed, direction, logos]);
+  }, [speed, direction, logos, isMobile]);
 
   // Dupliquer les logos pour un défilement continu sans espace
   const getDuplicatedLogos = () => {
@@ -147,11 +181,48 @@ const LogoLoop: React.FC<LogoLoopProps> = ({
   
   const duplicatedLogos = getDuplicatedLogos();
 
+  // Affichage mobile : logos statiques en grille adaptative
+  if (isMobile) {
+    // Calculer le nombre optimal de colonnes selon le nombre de logos
+    const getGridCols = () => {
+      if (logos.length <= 2) return 'grid-cols-2';
+      if (logos.length <= 4) return 'grid-cols-2';
+      if (logos.length <= 6) return 'grid-cols-3';
+      return 'grid-cols-4';
+    };
+
+    return (
+      <div className={`relative w-full h-full flex items-center justify-center ${className}`}>
+        <div 
+          className="flex flex-wrap gap-2 w-full h-auto justify-center items-center"
+          style={{ transform: 'translateX(0)' }} // S'assurer que la position est réinitialisée
+        >
+          {logos.map((logo, index) => (
+            <div
+              key={`${logo.name}-${index}`}
+              className="flex items-center gap-1.5 h-8 px-2 py-1 bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm opacity-60 hover:opacity-100 hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer group flex-shrink-0"
+            >
+              <img
+                src={logo.src}
+                alt={logo.alt}
+                className="h-4 w-4 object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300 flex-shrink-0"
+              />
+              <span className="text-sm text-white font-medium whitespace-nowrap">
+                {logo.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Affichage desktop : slider animé
   return (
-    <div className={`relative overflow-hidden ${className}`}>
+    <div className={`relative overflow-hidden h-auto ${className}`}>
       <div
         ref={containerRef}
-        className="flex items-center gap-4 whitespace-nowrap will-change-transform"
+        className="flex items-center gap-4 whitespace-nowrap will-change-transform h-auto"
         style={{ 
           width: 'fit-content',
           transition: isAnimating ? 'none' : 'transform 0.3s ease-out'
@@ -160,12 +231,12 @@ const LogoLoop: React.FC<LogoLoopProps> = ({
         {duplicatedLogos.map((logo, index) => (
           <div
             key={`${logo.name}-${index}`}
-            className="flex items-center gap-1.5 min-w-fit h-12 px-2 py-2 bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm opacity-60 hover:opacity-100 hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer"
+            className="flex items-center gap-1.5 min-w-fit h-12 px-2 py-2 bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm opacity-60 hover:opacity-100 hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer group"
           >
             <img
               src={logo.src}
               alt={logo.alt}
-              className="h-5 w-5 object-contain filter grayscale hover:grayscale-0 transition-all duration-300 flex-shrink-0"
+              className="h-5 w-5 object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300 flex-shrink-0"
             />
             <span className="text-xs text-white font-medium whitespace-nowrap">
               {logo.name}
