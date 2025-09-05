@@ -1,555 +1,72 @@
-# Portfolio Project - Cursor Rules
+# Freelance Landing Project - Cursor Rules
 
-## Project Overview
-This is a modern freelance website built with clean architecture principles and SOLID design patterns.
+## Tech Stack
+- Next.js 15+ with TypeScript
+- Tailwind CSS + Framer Motion
+- React Bits (UI components, skeletons, loaders)
+- next-intl (i18n)
+- pnpm package manager
 
-## Technology Stack
-- **Frontend**: Next.js 15+ with TypeScript
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion + React Bits (for pre-made beautiful components)
-- **Icons**: Lucide React
-- **UI Components**: React Bits (creative landing components, skeletons, loaders)
-- **Internationalization**: next-intl for automatic translation
-- **Deployment**: Vercel
-- **Package Manager**: pnpm (preferred for performance)
-
-## Architecture Principles
-
-### SOLID Principles Implementation
-- **Single Responsibility**: Each component/hook/utility has one clear purpose
-- **Open/Closed**: Components are extensible without modification
-- **Liskov Substitution**: Components can be replaced with compatible alternatives
-- **Interface Segregation**: Small, focused interfaces over large ones
-- **Dependency Inversion**: High-level modules don't depend on low-level modules
-
-### Clean Architecture
-- Separate concerns into distinct layers
-- Follow the dependency rule (dependencies point inward)
-- Keep business logic independent of frameworks
-- Use dependency injection where appropriate
-- Implement composition over inheritance
-
-### Component Composition Strategy
-- **Base Components**: Reusable, configurable building blocks
-- **Specialized Components**: Domain-specific components using composition
-- **Layout Components**: Structural components for page organization
-- **Section Components**: Content-specific components for different page sections
+## Architecture
+- SOLID principles
+- Clean architecture with separated concerns
+- Component composition over inheritance
+- Single responsibility per component
 
 ## Folder Structure
 ```
 src/
-├── app/                    # Next.js app router with i18n
-│   ├── [locale]/          # Internationalization routes
-│   │   ├── page.tsx       # Accueil (Home)
-│   │   ├── projets/       # Projects page
-│   │   ├── parcours/      # Journey/Experience page
-│   │   └── contact/       # Contact page
-│   ├── globals.css        # Global styles
-│   └── layout.tsx         # Root layout
-├── components/             # Reusable UI components
-│   ├── ui/                # Base UI components
-│   │   ├── buttons/       # Button components (Button, AnimatedButton, etc.)
-│   │   ├── forms/         # Form components (FormField, Input, etc.)
-│   │   └── index.ts       # Main UI exports
-│   ├── layout/            # Layout components (Header, Navigation, etc.)
-│   ├── sections/          # Page sections (HeroSection, etc.)
-│   ├── skeletons/         # Loading skeletons (React Bits)
-│   └── loaders/           # Loading components (React Bits)
-├── hooks/                 # Custom React hooks
-│   ├── useForm.ts         # Form management hook
-│   ├── useMediaQuery.ts   # Media query hook
-│   ├── useScrollDirection.ts # Scroll direction hook
-│   └── useTranslations.ts # Translations hook
-├── lib/                   # Utility functions and configurations
-│   ├── validation.ts      # Validation utilities
-│   ├── utils.ts           # General utilities
-│   ├── languages.ts       # Language utilities
-│   └── index.ts           # Main lib exports
-├── contexts/              # React contexts
-│   ├── ThemeContext.tsx   # Theme management
-│   └── LanguageContext.tsx # Language management
-├── types/                 # TypeScript type definitions
-│   ├── theme.ts           # Theme types
-│   └── index.ts           # Main type exports
-├── data/                  # Static data and constants
-│   └── constants.ts       # Application constants
-├── locales/               # Translation files (fr, en, etc.)
-└── assets/                # Images, icons, and other static assets
+├── app/                    # Next.js app router
+├── components/             # UI components
+│   ├── ui/                # Base components
+│   ├── layout/            # Layout components
+│   ├── sections/          # Page sections
+│   └── skeletons/         # Loading skeletons
+├── hooks/                 # Custom hooks
+├── lib/                   # Utilities
+├── types/                 # TypeScript types
+├── data/                  # Static data
+└── locales/               # Translations
 ```
+
+## Code Standards
+- TypeScript strict mode
+- Named exports for components
+- Tailwind CSS for styling
+- No inline styles
+- No console.log in production
+- Use absolute imports (@/)
 
 ## Component Guidelines
+- One component = one purpose
+- Extend with props, not modification
+- Use composition pattern
+- Small, focused interfaces
+- PascalCase for components, camelCase for hooks
 
-### SOLID Component Design
-- **Single Responsibility**: One component = one purpose
-- **Open/Closed**: Extend with props, not by modifying
-- **Composition**: Use composition over inheritance
-- **Interface Segregation**: Small, focused prop interfaces
-- **Dependency Inversion**: Depend on abstractions, not concretions
-
-### Component Architecture
-- **Base Components**: Button, Input, FormField (highly reusable)
-- **Specialized Components**: SubmitButton, ActionButton (composed from base)
-- **Layout Components**: Header, Navigation, GlobalLayout (structural)
-- **Section Components**: HeroSection, ContactForm (content-specific)
-
-### Component Composition Pattern
-```typescript
-// Base component
-<Button variant="primary" size="lg">Click me</Button>
-
-// Specialized component using composition
-<SubmitButton isLoading={true}>Submit</SubmitButton>
-
-// Layout component
-<Header>
-  <Navigation items={navItems} />
-</Header>
-```
-
-### File Naming Conventions
-- **Components**: PascalCase (e.g., `HeroSection.tsx`)
-- **Hooks**: camelCase with "use" prefix (e.g., `useForm.ts`)
-- **Utilities**: camelCase (e.g., `validation.ts`)
-- **Types**: PascalCase (e.g., `ButtonProps.ts`)
-- **Constants**: UPPER_SNAKE_CASE (e.g., `APP_CONFIG`)
-
-## Code Quality Standards
-
-### TypeScript
-- Enable strict mode
-- Use proper type annotations
-- Avoid `any` type unless absolutely necessary
-- Prefer interfaces over types for object shapes
-- Use utility types when appropriate (Partial, Pick, Omit, etc.)
-- Export types from dedicated type files
-
-### React Best Practices
-- Use functional components with TypeScript
-- Implement proper prop types and interfaces
-- Use React.memo() for performance optimization when needed
-- Implement proper error boundaries
-- Use proper key props in lists
-- Avoid unnecessary re-renders
-- Use useCallback and useMemo judiciously
-
-### SOLID Implementation Examples
-
-#### Single Responsibility
-```typescript
-// ✅ Good: One component, one purpose
-export function SubmitButton({ isLoading, children, ...props }) {
-  return <Button type="submit" variant="primary" isLoading={isLoading} {...props}>{children}</Button>;
-}
-
-// ❌ Bad: Multiple responsibilities
-export function FormWithValidationAndSubmission() { /* Too many things */ }
-```
-
-#### Open/Closed Principle
-```typescript
-// ✅ Good: Extensible through props
-export function Button({ variant, size, children, ...props }) {
-  const variants = { primary: 'bg-primary', secondary: 'bg-secondary' };
-  return <button className={variants[variant]} {...props}>{children}</button>;
-}
-
-// ❌ Bad: Hard to extend
-export function Button() {
-  return <button className="bg-primary text-white">Click me</button>;
-}
-```
-
-#### Interface Segregation
-```typescript
-// ✅ Good: Small, focused interfaces
-export interface ButtonProps {
-  variant?: 'primary' | 'secondary';
-  size?: 'sm' | 'md' | 'lg';
-  children: ReactNode;
-}
-
-// ❌ Bad: Large, unfocused interface
-export interface ComponentProps {
-  // 50+ properties for different use cases
-}
-```
-
-### Styling Guidelines
-- Use Tailwind CSS utility classes
-- Create custom components for repeated patterns
-- Follow mobile-first responsive design
-- Maintain consistent spacing using Tailwind's scale
-- Use CSS variables for theme customization
-- Leverage CSS-in-JS for dynamic styles when needed
-
-### Performance
-- Optimize images (use Next.js Image component)
-- Implement lazy loading for below-the-fold content
-- Minimize bundle size
-- Use proper caching strategies
-- Implement proper SEO practices
-- Use React Bits skeletons for instant loading feedback
-- Implement page-level loading states and transitions
-- Leverage Next.js static generation for better performance
-- Use React.Suspense with React Bits loaders for code splitting
-
-## Code Organization Rules
-
-### No Duplication (DRY Principle)
-- Extract common logic into utilities or hooks
-- Create reusable components for repeated UI patterns
-- Use constants for repeated values
-- Implement shared types for common data structures
-- Centralize configuration in constants files
-
-### Import Organization
-```typescript
-// 1. React and Next.js imports
-import React from 'react'
-import { NextPage } from 'next'
-
-// 2. Third-party libraries
-import { motion } from 'framer-motion'
-import { ChevronDown } from 'lucide-react'
-
-// 3. Internal imports (absolute paths preferred)
-import { Button } from '@/components/ui/buttons'
-import { useForm } from '@/hooks/useForm'
-import { ButtonProps } from '@/types/Button'
-
-// 4. Relative imports (only for closely related files)
-import './styles.css'
-```
-
-### Component Export Strategy
-```typescript
-// ✅ Good: Named exports for components
-export { Button } from './Button';
-export { SubmitButton } from './SubmitButton';
-
-// ✅ Good: Type exports
-export type { ButtonProps } from './Button';
-
-// ❌ Bad: Default exports for components
-export default Button;
-```
-
-### Error Handling
-- Implement proper error boundaries
-- Use try-catch blocks for async operations
-- Provide meaningful error messages
-- Log errors appropriately for debugging
-- Use validation utilities for form handling
-
-## Git Workflow
-- Use conventional commit messages
-- Create feature branches for development
-- Write descriptive commit messages
-- Keep commits atomic and focused
-- Follow SOLID principles in code changes
-
-## Accessibility (a11y)
-- Use semantic HTML elements
-- Implement proper ARIA labels
-- Ensure keyboard navigation works
-- Maintain proper color contrast ratios
-- Test with screen readers
-- Follow WCAG guidelines
-
-## Security
-- Sanitize user inputs
-- Use environment variables for sensitive data
-- Implement proper CSP headers
-- Follow OWASP guidelines
-- Validate all form inputs
-
-## Testing Strategy
-- Write unit tests for utilities and hooks
-- Implement integration tests for critical flows
-- Use React Testing Library for component tests
-- Maintain good test coverage
-- Test SOLID principles implementation
+## Skeleton System
+- **ONLY for real loading states** (translations, API calls, images)
+- **NEVER for artificial delays**
+- Wait for translations before showing text content
+- Use exact same Tailwind classes as real components
+- Match responsive dimensions
 
 ## Development Workflow
-1. Plan the feature/component architecture following SOLID principles
-2. Create types and interfaces first
-3. Implement base components with single responsibility
-4. Create specialized components using composition
-5. Add proper styling with Tailwind
-6. Test functionality and responsiveness
-7. Optimize for performance
-8. Ensure SOLID compliance
+1. Read 3+ relevant files before coding
+2. Run `pnpm tsc` and `pnpm lint` after changes
+3. Check port 3000 before starting server: `lsof -ti:3000`
+4. Kill existing process if needed: `kill -9 $(lsof -ti:3000)`
+5. Test with real data or add logging
 
-## Documentation
-- Document component interfaces and props
-- Document hook usage and return values
-- Document utility functions and their purposes
-- Document SOLID implementation decisions
-- Document any custom configurations
+## Portfolio Pages
+- Home: Creative landing with React Bits
+- Projects: Portfolio showcase
+- About: Experience timeline  
+- Contact: Contact form
 
-## Prohibited Practices
-- No inline styles (use Tailwind classes)
-- No console.log in production code
-- No unused imports or variables
-- No magic numbers (use named constants)
-- No deep nesting (max 3-4 levels)
-- No large components (split into smaller ones)
-- No violation of SOLID principles
-- No component with multiple responsibilities
-- No hardcoded values (use constants)
-
-## macOS Development Notes
-- Use absolute paths consistently
-- Configure proper file permissions
-- Use Homebrew for package management
-- Set up proper environment variables
-- Configure Git with proper credentials
-
-## Performance Targets
-- First Contentful Paint: < 1.5s
-- Largest Contentful Paint: < 2.5s
-- Cumulative Layout Shift: < 0.1
-- Time to Interactive: < 3s
-- Bundle size: < 250KB gzipped
-
-## Portfolio-Specific Requirements
-
-### Pages Structure
-1. **Accueil (Home)** - Creative landing page with React Bits hero components
-2. **Projets (Projects)** - Showcase portfolio projects with interactive elements
-3. **Parcours (Journey)** - Professional experience and education timeline
-4. **Contact** - Contact form with React Bits form components
-
-### Creative Landing Page Guidelines
-- Use React Bits hero sections and creative components
-- Implement eye-catching animations and micro-interactions
-- Ensure mobile-first responsive design
-- Include compelling call-to-action elements
-- Use React Bits gradient backgrounds and visual effects
-
-### User Experience (UX) Priorities
-- **Loading States**: Every page transition must have React Bits loaders
-- **Skeleton Screens**: Use React Bits skeletons for content loading
-- **Smooth Navigation**: Implement seamless page transitions
-- **Progressive Loading**: Load critical content first, then enhance
-- **Error Boundaries**: Graceful error handling with React Bits error components
-
-### Internationalization (i18n) Requirements
-- **Auto-detection**: Detect user's country/language automatically
-- **Supported Languages**: French (primary) and English (secondary)
-- **Fallback**: Default to French if detection fails
-- **SEO**: Proper hreflang tags for international SEO
-- **URL Structure**: /fr/ and /en/ routes for all pages
-- **Translation Keys**: Organized by page and component
-
-### React Bits Integration Strategy
-- **Components**: Leverage pre-built React Bits components for speed
-- **Animations**: Use React Bits animations over custom Framer Motion when possible
-- **Consistency**: Maintain visual consistency with React Bits design system
-- **Customization**: Extend React Bits components with Tailwind when needed
-- **Performance**: Prefer React Bits optimized components for better performance
-
-### Navigation Structure
-```
-Navigation:
-├── Accueil (/)
-├── Projets (/projets)
-├── Parcours (/parcours)
-└── Contact (/contact)
-
-Language Switching:
-├── 🇫🇷 Français
-└── 🇬🇧 English
-```
-
-### Content Loading Strategy
-1. **Critical Path**: Load navigation and hero section first
-2. **Progressive Enhancement**: Add animations and interactive elements
-3. **Below Fold**: Lazy load non-critical content with React Bits loaders
-4. **Images**: Use Next.js Image with React Bits placeholder components
-5. **Fonts**: Preload critical fonts, fallback gracefully
-
-## Skeleton System Guidelines
-
-### Core Principle
-**Skeletons are ONLY displayed during REAL loading states, NEVER for artificial delays.**
-
-### When to Use Skeletons
-✅ **USE Skeletons For:**
-- **Translation loading** (i18n initialization) - **PRIMARY USE CASE**
-- **API calls** (fetching data from backend)
-- **Image loading** (lazy loading below-the-fold content)
-- **Component mounting** (complex component initialization)
-- **Authentication state** (user login/logout process)
-
-❌ **NEVER Use Skeletons For:**
-- **Artificial delays** (setTimeout for "smooth" transitions)
-- **Already loaded content** (forcing skeleton display after content is ready)
-- **Theme switching** (use CSS transitions instead)
-- **Navigation between pages** (use page-level loading states)
-
-### Skeleton Loading Strategy
-- **Text-containing components**: Wait for translations before displaying (Header, Navigation, HeroSection, text pages)
-- **Non-text components**: Display immediately without skeleton (Logo, Contact page, Home page)
-- **Mixed components**: Use skeleton only for text parts, display non-text parts immediately
-
-### Skeleton Implementation Pattern
-```typescript
-export function ComponentWithSkeleton() {
-  const { t, isLoading } = useTranslations();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Display skeleton ONLY during real translation loading
-  if (isLoading || !mounted) {
-    return <ComponentSkeleton />;
-  }
-
-  return <ActualComponent />;
-}
-```
-
-### Translation Loading Strategy
-- **Wait for translations** before displaying any text content
-- **Use `isLoading` from useTranslations hook** to detect translation readiness
-- **Hide text content** (like `home.title`) until translations are loaded
-- **Show skeletons immediately** when translations are loading
-- **Transition smoothly** from skeleton to translated content
-
-### Skeleton Design Requirements
-- **Ultra-faithful**: Use EXACT same Tailwind classes as real component
-- **Responsive**: Match real component dimensions at all breakpoints
-- **Transparent backgrounds**: Use `bg-muted/20` or `bg-muted/30` for subtle visibility
-- **No white backgrounds**: Skeletons should blend with page background
-- **Same layout**: Maintain identical spacing, padding, and positioning
-
-### Performance Guidelines
-- **No artificial delays**: Remove all setTimeout for skeleton display
-- **Instant skeleton display**: Show skeletons immediately when translations are loading
-- **Smooth transitions**: 300ms maximum for skeleton to content transitions
-- **Progressive loading**: Load critical content first, then enhance
-
-### Component-Specific Skeleton Rules
-
-#### Header Skeleton
-- Display during translation loading only
-- Match exact header dimensions and layout
-- Include logo placeholder, navigation placeholder, theme toggle, language selector
-- Responsive height: `h-16 sm:h-20`
-
-#### Navbar Skeleton
-- Display during translation loading only
-- Match exact navbar dimensions and layout
-- Include logo placeholder, navigation items, theme toggle, language selector, mobile menu
-- Responsive: `px-6 sm:px-8 lg:px-16 py-4 sm:py-6 md:py-8`
-
-#### Logo Skeleton
-- Display during image and typography loading only
-- Match exact logo dimensions and layout
-- Include favicon placeholder and text placeholder
-- Same spacing: `gap-3`
-
-#### Navigation Skeleton
-- Display during translation loading only
-- Match navigation item layout and spacing
-- Include all navigation items: Home, Projects, Journey, Contact
-- Responsive: `hidden lg:flex`
-
-#### Hero Section Skeleton
-- Display during translation and data loading
-- Match hero section layout exactly
-- Include badge, title, description, stats, buttons
-- Responsive text sizes and spacing
-
-#### Page Skeletons
-- **Home Page Skeleton**: Not needed - page displays immediately (no text content)
-- **Projects Page Skeleton**: Display during translation loading, match page layout with title, subtitle, and development text
-- **About Page Skeleton**: Display during translation loading, match page layout with title, subtitle, and development text
-- **Contact Page Skeleton**: Display during translation loading, match page layout with form structure and labels
-
-#### Form Skeleton
-- Display during form validation or submission
-- Match form field layout and dimensions
-- Include input placeholders and button states
-
-### Skeleton File Organization
-```
-src/components/skeletons/
-├── HeaderSkeleton.tsx      # Header loading state (waits for translations)
-├── NavbarSkeleton.tsx      # Navbar loading state (waits for translations)
-├── LogoSkeleton.tsx        # Logo loading state (waits for image/typography)
-├── NavigationSkeleton.tsx  # Navigation loading state (waits for translations)
-├── HeroSkeleton.tsx        # Hero section loading state (waits for translations)
-├── ProjectsPageSkeleton.tsx # Projects page loading state (waits for translations)
-├── AboutPageSkeleton.tsx   # About page loading state (waits for translations)
-├── ContactPageSkeleton.tsx # Contact page loading state (waits for translations)
-├── FormSkeleton.tsx        # Form loading state (waits for translations)
-├── CardSkeleton.tsx        # Generic card loading state
-└── index.ts                # Centralized exports
-```
-
-### Skeleton Export Pattern
-```typescript
-// ✅ Good: Named exports for specific skeletons
-export { HeaderSkeleton } from './HeaderSkeleton';
-export { NavbarSkeleton } from './NavbarSkeleton';
-export { LogoSkeleton } from './LogoSkeleton';
-export { NavigationSkeleton } from './NavigationSkeleton';
-export { HeroSkeleton } from './HeroSkeleton';
-export { ProjectsPageSkeleton } from './ProjectsPageSkeleton';
-export { AboutPageSkeleton } from './AboutPageSkeleton';
-export { ContactPageSkeleton } from './ContactPageSkeleton';
-
-// ❌ Bad: Exporting non-existent skeletons
-export { NonExistentSkeleton } from './NonExistentSkeleton';
-```
-
-### Integration with React Bits
-- **Prefer React Bits skeletons** when available for consistency
-- **Extend with custom skeletons** for specific component needs
-- **Maintain visual consistency** with React Bits design system
-- **Use React Bits loading patterns** for inspiration
-
-### Testing Skeleton Behavior
-- **Verify translation loading** displays skeletons correctly
-- **Test responsive behavior** across all breakpoints
-- **Ensure smooth transitions** between skeleton and content
-- **Validate no white flashes** during loading
-- **Check accessibility** of skeleton elements
-- **Verify no text content** (like `home.title`) is visible during loading
-
-## SOLID Implementation Checklist
-
-### Single Responsibility Principle
-- [ ] Each component has one clear purpose
-- [ ] Each hook manages one specific concern
-- [ ] Each utility function does one thing
-- [ ] Each type represents one concept
-
-### Open/Closed Principle
-- [ ] Components are extensible through props
-- [ ] Hooks accept configuration options
-- [ ] Utilities are configurable
-- [ ] Types are extensible
-
-### Liskov Substitution Principle
-- [ ] Components can be replaced with compatible alternatives
-- [ ] Hooks can be swapped for similar functionality
-- [ ] Utilities can be replaced with equivalent functions
-
-### Interface Segregation Principle
-- [ ] Prop interfaces are small and focused
-- [ ] Hook return types are minimal
-- [ ] Utility function signatures are simple
-- [ ] Type definitions are specific
-
-### Dependency Inversion Principle
-- [ ] High-level components don't depend on low-level ones
-- [ ] Components depend on abstractions (interfaces)
-- [ ] Hooks are framework-agnostic
-- [ ] Utilities are independent of implementation details
-
-Remember: Always check for existing implementations before creating new ones. Maintain consistency across the codebase and follow these established SOLID patterns. Prioritize user experience with React Bits components for a polished, professional portfolio while maintaining clean, maintainable code architecture. **Most importantly: Skeletons are for REAL loading, not artificial delays!**
+## Key Rules
+- No duplication (DRY principle)
+- Check existing implementations first
+- Use React Bits components when available
+- Maintain consistency across codebase
+- Skeletons are for REAL loading only

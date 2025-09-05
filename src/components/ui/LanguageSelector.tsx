@@ -6,7 +6,11 @@ import { ChevronDown } from 'lucide-react'
 import { useLanguage, SupportedLanguage } from '@/contexts/LanguageContext'
 import { SUPPORTED_LANGUAGES } from '@/lib/languages'
 
-export const LanguageSelector: React.FC = () => {
+interface LanguageSelectorProps {
+  className?: string;
+}
+
+export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ className = "" }) => {
   const { currentLanguage, setLanguage, isLoading } = useLanguage()
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -38,7 +42,7 @@ export const LanguageSelector: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-muted/50 animate-pulse">
+      <div className={`flex items-center space-x-2 px-3 py-2 rounded-lg bg-muted/50 animate-pulse ${className}`}>
         <div className="w-4 h-4 bg-muted rounded-full" />
         <div className="w-16 h-4 bg-muted rounded" />
       </div>
@@ -46,19 +50,19 @@ export const LanguageSelector: React.FC = () => {
   }
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className={`relative w-full ${className}`} ref={dropdownRef}>
       {/* Bouton principal */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="
-          relative px-3 py-2 rounded-lg
+        className={`
+          relative px-3 py-2 rounded-lg flex items-center justify-center w-full
           bg-card/80 backdrop-blur-md border border-border
           text-foreground hover:bg-card hover:text-primary
           transition-all duration-300 ease-in-out
           hover:scale-110 active:scale-95 
           shadow-lg hover:shadow-xl
           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
-        "
+        `}
         aria-label="Sélectionner la langue"
         aria-expanded={isOpen}
         aria-haspopup="listbox"

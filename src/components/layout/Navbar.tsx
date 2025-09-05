@@ -89,20 +89,20 @@ export function Navbar() {
 
         {/* Language Selector + Theme Toggle + Menu mobile (hamburger) à droite */}
         <div className="flex items-center gap-3">
-          {/* Language Selector + Theme Toggle - Desktop uniquement (cachés en dessous de 450px) */}
+          {/* Theme Toggle + Language Selector - Desktop uniquement (cachés en dessous de 450px) */}
           {!isMobile && (
-            <>
-              <div className="flex-shrink-0">
-                <LanguageSelector />
+            <div className="flex items-center gap-3 w-full justify-end">
+              <div className="flex-shrink-0 flex justify-center">
+                <ThemeToggle className="w-full" />
               </div>
-              <div className="flex-shrink-0">
-                <ThemeToggle />
+              <div className="flex-shrink-0 flex justify-center">
+                <LanguageSelector className="w-full" />
               </div>
-            </>
+            </div>
           )}
           
           {/* Menu mobile - Visible uniquement en dessous de 450px */}
-          <MobileMenu navItems={navItems} currentPath={pathname} />
+          <MobileMenu navItems={navItems} currentPath={pathname} isMobile={isMobile} />
         </div>
       </nav>
     </div>
@@ -112,7 +112,7 @@ export function Navbar() {
 /**
  * Menu mobile avec dropdown
  */
-function MobileMenu({ navItems, currentPath }: { navItems: Array<{name: string, href: string}>, currentPath: string }) {
+function MobileMenu({ navItems, currentPath, isMobile }: { navItems: Array<{name: string, href: string}>, currentPath: string, isMobile: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -170,21 +170,25 @@ function MobileMenu({ navItems, currentPath }: { navItems: Array<{name: string, 
             className="absolute top-full right-0 mt-2 w-64 bg-background border border-border rounded-xl shadow-xl z-50"
           >
             <div className="py-4">
-              {/* Contrôles en haut du menu mobile */}
-              <div className="flex items-center justify-between px-4 mb-4">
-                {/* Bouton Langue à gauche */}
-                <div className="flex items-center">
-                  <LanguageSelector />
-                </div>
-                
-                {/* Bouton Thème à droite */}
-                <div className="flex items-center">
-                  <ThemeToggle />
-                </div>
-              </div>
+              {/* Contrôles en haut du menu mobile - Affichés seulement si cachés dans le header (mobile) */}
+              {isMobile && (
+                <>
+                  <div className="flex items-center gap-3 w-full px-4 mb-4">
+                    {/* Bouton Thème à gauche */}
+                    <div className="flex-1 flex justify-center">
+                      <ThemeToggle className="w-full" />
+                    </div>
+                    
+                    {/* Bouton Langue à droite */}
+                    <div className="flex-1 flex justify-center">
+                      <LanguageSelector className="w-full" />
+                    </div>
+                  </div>
 
-              {/* Séparateur visuel */}
-              <div className="border-t border-border/30 mb-4"></div>
+                  {/* Séparateur visuel */}
+                  <div className="border-t border-border/30 mb-4"></div>
+                </>
+              )}
 
               {/* Navigation mobile */}
               <div className="px-2">

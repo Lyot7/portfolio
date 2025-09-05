@@ -62,12 +62,12 @@ export function HeroSection() {
           </h1>
 
           {/* Sous-titre */}
-          <p className="text-lg sm:text-xl lg:text-2xl text-foreground max-w-3xl mb-8 leading-relaxed">
+          <p className="hidden [340px]:block text-lg sm:text-xl lg:text-2xl text-foreground max-w-3xl mb-8 leading-relaxed">
             {t('home.hero.description')}
           </p>
 
           {/* Conteneur flex en colonne avec inversion sur mobile très petit */}
-          <div className="flex flex-col gap-4 mb-12 max-[450px]:flex-col-reverse">
+          <div className="flex flex-col gap-8 mb-12 max-[450px]:flex-col-reverse">
             
             {/* Statistiques rapides avec fond pour meilleure lisibilité */}
             <div className="flex flex-wrap gap-4">

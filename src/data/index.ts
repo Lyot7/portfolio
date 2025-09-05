@@ -2,4 +2,4 @@
 export * from './constants';
 
 // Export des projets
-export * from './projects';
+export * from './projects-data';

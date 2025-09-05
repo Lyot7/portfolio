@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/ui';
 import { Navigation } from '@/components/layout';
 import { ThemeToggle } from '@/components/ui';
 import { LanguageSelector } from '@/components/ui';
-import { useTranslations, useComponentLoading } from '@/hooks';
+import { useTranslations, useComponentLoading, useIsMobile } from '@/hooks';
 import { HeaderSkeleton } from '@/components/skeletons';
 import { Menu, X } from 'lucide-react';
 
@@ -14,20 +14,7 @@ export function Header() {
   const { t } = useTranslations();
   const { isLoading } = useComponentLoading();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Gérer le breakpoint à 450px
-  useEffect(() => {
-    const checkScreenSize = () => {
-      const isMobileSize = window.innerWidth < 450;
-      console.log('Screen width:', window.innerWidth, 'isMobile:', isMobileSize);
-      setIsMobile(isMobileSize);
-    };
-
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
+  const isMobile = useIsMobile();
 
   // Afficher le skeleton pendant le chargement des traductions
   // TEMPORAIRE: Désactivé pour debug
@@ -37,10 +24,6 @@ export function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-      {/* Debug indicator - à supprimer après test */}
-      <div className="bg-red-500 text-white text-xs p-1 text-center">
-        DEBUG: isMobile = {isMobile.toString()}, width = {typeof window !== 'undefined' ? window.innerWidth : 'SSR'}
-      </div>
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo - Gère son propre skeleton */}
@@ -81,7 +64,7 @@ export function Header() {
             <div className="px-6 py-6">
               <div className="flex flex-col gap-6">
                 
-                {/* Contrôles en haut du menu mobile */}
+                {/* Contrôles en haut du menu mobile - Affichés car cachés dans le header en dessous de 450px */}
                 <div className="flex items-center justify-between">
                   {/* Bouton Langue à gauche */}
                   <div className="flex items-center">
