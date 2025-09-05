@@ -460,11 +460,11 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                   {/* Contenu de la carte */}
                   <div className="card__content flex flex-col relative text-white h-full">
                     {card.isTitle ? (
-                      <div className="flex items-center justify-center h-full">
+                      <header className="flex items-center justify-center h-full">
                         <h2 className="text-2xl md:text-3xl font-bold text-white leading-tight text-center">
                           {card.content as string}
                         </h2>
-                      </div>
+                      </header>
                     ) : card.isImage ? (
                       <div className="relative h-full overflow-hidden" style={{ minHeight: '280px', maxHeight: '500px' }}>
                         <ProjectImage
@@ -486,14 +486,14 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                         />
                       </div>
                     ) : card.isDescription ? (
-                      <div className="flex items-start justify-start h-full px-4 ">
+                      <section className="flex items-start justify-start h-full px-4 ">
                         <div 
                           className="text-base text-white leading-relaxed text-left prose prose-invert prose-base max-w-none"
                           dangerouslySetInnerHTML={{ __html: card.content as string }}
                         />
-                      </div>
+                      </section>
                     ) : card.isLinks ? (
-                      <div className="flex flex-row md:flex-col lg:flex-row gap-2 h-full p-2">
+                      <nav className="flex flex-row md:flex-col lg:flex-row gap-2 h-full p-2">
                         {card.content && typeof card.content === 'object' && (
                           <>
                             {card.content.github && (
@@ -502,6 +502,7 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                                 target="_blank" 
                                 rel="noopener noreferrer"
                                 className="group flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-all duration-200 border border-green-500/40 bg-green-500/10 text-green-300 hover:bg-green-500/20 hover:border-green-400/60 rounded-lg py-2"
+                                aria-label={`Voir le code source de ${project.title} sur GitHub`}
                               >
                                 <Github className="h-4 w-4 transition-transform duration-200 group-hover:rotate-12" />
                                 <span>Code</span>
@@ -513,6 +514,7 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                                 target="_blank" 
                                 rel="noopener noreferrer"
                                 className="group flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-all duration-200 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg shadow-green-500/20 rounded-lg py-2"
+                                aria-label={`Voir la démo en ligne de ${project.title}`}
                               >
                                 <Globe className="h-4 w-4 transition-transform duration-200 group-hover:rotate-12" />
                                 <span>Démo</span>
@@ -520,7 +522,7 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                             )}
                           </>
                         )}
-                      </div>
+                      </nav>
                     ) : (
                       <div className="flex items-center justify-center h-full">
                         <p className="text-lg font-medium text-white text-center">

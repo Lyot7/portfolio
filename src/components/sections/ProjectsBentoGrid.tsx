@@ -21,14 +21,14 @@ export const ProjectsBentoGrid: React.FC<ProjectBentoGridProps> = ({
   return (
     <div className={`w-full space-y-12 ${className}`}>
       {projects.map((project, index) => (
-        <div key={index} className="w-full">
+        <article key={index} className="w-full">
           <ProjectBento
             project={project}
             enableBorderGlow={true}
             disableAnimations={false}
             glowColor="34, 197, 94"
           />
-        </div>
+        </article>
       ))}
     </div>
   );
