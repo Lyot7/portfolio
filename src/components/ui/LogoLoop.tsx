@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export interface LogoItem {
   src: string;
@@ -20,6 +21,7 @@ const LogoLoop: React.FC<LogoLoopProps> = ({
   className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
   const [isAnimating, setIsAnimating] = useState(false);
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -200,14 +202,20 @@ const LogoLoop: React.FC<LogoLoopProps> = ({
           {logos.map((logo, index) => (
             <div
               key={`${logo.name}-${index}`}
-              className="flex items-center gap-1.5 h-8 px-2 py-1 bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm opacity-60 hover:opacity-100 hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer group flex-shrink-0"
+              className={`flex items-center gap-1.5 h-8 px-2 py-1 rounded-lg backdrop-blur-sm opacity-60 hover:opacity-100 transition-all duration-300 cursor-pointer group flex-shrink-0 ${
+                theme === 'light' 
+                  ? 'bg-white border border-gray-300 hover:bg-gray-50 hover:border-gray-400' 
+                  : 'bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20'
+              }`}
             >
               <img
                 src={logo.src}
                 alt={logo.alt}
                 className="h-4 w-4 object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300 flex-shrink-0"
               />
-              <span className="text-sm text-white font-medium whitespace-nowrap">
+              <span className={`text-sm font-medium whitespace-nowrap ${
+                theme === 'light' ? 'text-black' : 'text-white'
+              }`}>
                 {logo.name}
               </span>
             </div>
@@ -231,14 +239,20 @@ const LogoLoop: React.FC<LogoLoopProps> = ({
         {duplicatedLogos.map((logo, index) => (
           <div
             key={`${logo.name}-${index}`}
-            className="flex items-center gap-1.5 min-w-fit h-12 px-2 py-2 bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm opacity-60 hover:opacity-100 hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer group"
+            className={`flex items-center gap-1.5 min-w-fit h-12 px-2 py-2 rounded-lg backdrop-blur-sm opacity-60 hover:opacity-100 transition-all duration-300 cursor-pointer group ${
+              theme === 'light' 
+                ? 'bg-white border border-gray-300 hover:bg-gray-50 hover:border-gray-400' 
+                : 'bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20'
+            }`}
           >
             <img
               src={logo.src}
               alt={logo.alt}
               className="h-5 w-5 object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300 flex-shrink-0"
             />
-            <span className="text-xs text-white font-medium whitespace-nowrap">
+            <span className={`text-xs font-medium whitespace-nowrap ${
+              theme === 'light' ? 'text-black' : 'text-white'
+            }`}>
               {logo.name}
             </span>
           </div>

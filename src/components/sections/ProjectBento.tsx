@@ -6,6 +6,7 @@ import { ProjectImage } from '../ui';
 import { getProjectLogos } from '../../data/tech-logos';
 import { ProjectBentoSkeleton } from '../skeletons/ProjectBentoSkeleton';
 import { useTranslations } from '../../hooks/useTranslations';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export interface ProjectBentoProps {
   project: {
@@ -101,6 +102,7 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
   const isMobile = useMobileDetection();
   const shouldDisableAnimations = disableAnimations || isMobile;
   const { isLoading } = useTranslations();
+  const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
   
   const projectCards = createProjectCards(project);
@@ -160,7 +162,7 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
             --glow-intensity: 0;
             --glow-radius: 200px;
             --glow-color: ${glowColor};
-            --border-color: #166534;
+            --border-color: rgba(34, 197, 94, 0.8);
             --background-dark: #060010;
             --white: hsl(0, 0%, 100%);
             --green-primary: rgba(34, 197, 94, 1);
@@ -227,9 +229,9 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
             }
             
             .card.is-technologies {
-              min-height: 120px;
+              min-height: 140px;
               height: auto;
-              padding: 0.75rem;
+              padding: 1rem;
               display: flex;
               align-items: center;
               justify-content: center;
@@ -254,9 +256,9 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
           /* Optimisation des cartes desktop */
           @media (min-width: 768px) {
             .card.is-technologies {
-              min-height: 80px;
-              height: 80px;
-              padding: 1rem;
+              min-height: 100px;
+              height: 100px;
+              padding: 1.25rem;
               display: flex;
               align-items: center;
               justify-content: center;
@@ -340,16 +342,39 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
           /* Halo vert sur les cartes */
           .card {
             transition: all 0.3s ease;
-            background: rgba(6, 0, 16, 0.5);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
           }
           
           .card:hover {
-            box-shadow: 0 0 20px rgba(34, 197, 94, 0.3), 0 0 40px rgba(34, 197, 94, 0.1);
-            background: rgba(6, 0, 16, 0.6);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
+          }
+          
+          /* Thème sombre */
+          .dark .card {
+            background: rgba(6, 0, 16, 0.5);
+          }
+          
+          .dark .card:hover {
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.3), 0 0 40px rgba(34, 197, 94, 0.1);
+            background: rgba(6, 0, 16, 0.6);
+          }
+          
+          /* Thème clair */
+          .light .bento-section {
+            --border-color: rgba(34, 197, 94, 0.8);
+          }
+          
+          .light .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(34, 197, 94, 0.8);
+          }
+          
+          .light .card:hover {
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.15), 0 0 40px rgba(34, 197, 94, 0.03);
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(34, 197, 94, 1);
           }
           
           /* Styles pour le HTML dans la description */
@@ -368,6 +393,26 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
             --tw-prose-code: rgb(34 197 94);
             --tw-prose-pre-code: rgb(255 255 255);
             --tw-prose-pre-bg: rgba(6, 0, 16, 0.8);
+            --tw-prose-th-borders: rgb(34 197 94);
+            --tw-prose-td-borders: rgb(34 197 94);
+          }
+          
+          /* Styles pour le thème clair */
+          .light .prose-invert {
+            --tw-prose-body: rgb(0 0 0);
+            --tw-prose-headings: rgb(0 0 0);
+            --tw-prose-lead: rgb(0 0 0);
+            --tw-prose-links: rgb(34 197 94);
+            --tw-prose-bold: rgb(0 0 0);
+            --tw-prose-counters: rgb(0 0 0);
+            --tw-prose-bullets: rgb(0 0 0);
+            --tw-prose-hr: rgb(209 213 219);
+            --tw-prose-quotes: rgb(0 0 0);
+            --tw-prose-quote-borders: rgb(34 197 94);
+            --tw-prose-captions: rgb(0 0 0);
+            --tw-prose-code: rgb(34 197 94);
+            --tw-prose-pre-code: rgb(0 0 0);
+            --tw-prose-pre-bg: rgba(249, 250, 251, 0.8);
             --tw-prose-th-borders: rgb(34 197 94);
             --tw-prose-td-borders: rgb(34 197 94);
           }
@@ -414,6 +459,15 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
             font-style: italic;
           }
           
+          /* Styles pour le thème clair */
+          .light .prose-invert li {
+            color: rgb(0 0 0);
+          }
+          
+          .light .prose-invert em {
+            color: rgb(0 0 0);
+          }
+          
           .prose-invert ul, .prose-invert ol {
             margin: 0.5rem 0;
             padding-left: 1rem;
@@ -438,10 +492,8 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
               const baseClassName = `card flex flex-col justify-between relative ${card.isImage ? 'p-0 is-image' : card.isDescription ? 'p-2 sm:p-3 is-description' : card.isTitle ? 'p-2 sm:p-3 is-title' : card.isTechnologies ? 'p-2 sm:p-3 is-technologies' : card.isLinks ? 'p-2 sm:p-3 is-links' : 'p-2 sm:p-3'} rounded-[20px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${enableBorderGlow ? 'card--border-glow' : ''} ${card.className}`;
 
               const cardStyle = {
-                backgroundColor: 'rgba(6, 0, 16, 0.5)',
                 backdropFilter: 'blur(10px)',
                 borderColor: 'var(--border-color)',
-                color: 'var(--white)',
                 '--glow-x': '50%',
                 '--glow-y': '50%',
                 '--glow-intensity': '0',
@@ -458,10 +510,10 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                 >
 
                   {/* Contenu de la carte */}
-                  <div className="card__content flex flex-col relative text-white h-full">
+                  <div className={`card__content flex flex-col relative h-full ${theme === 'light' ? 'text-black' : 'text-foreground'}`}>
                     {card.isTitle ? (
                       <header className="flex items-center justify-center h-full">
-                        <h2 className="text-2xl md:text-3xl font-bold text-white leading-tight text-center">
+                        <h2 className={`text-2xl md:text-3xl font-bold leading-tight text-center ${theme === 'light' ? 'text-black' : 'text-foreground'}`}>
                           {card.content as string}
                         </h2>
                       </header>
@@ -482,13 +534,13 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                           logos={getProjectLogos(card.content as string[])}
                           speed={0.3}
                           direction="left"
-                          className="w-full h-20 md:h-10"
+                          className="w-full h-16 md:h-12"
                         />
                       </div>
                     ) : card.isDescription ? (
                       <section className="flex items-start justify-start h-full px-4 ">
                         <div 
-                          className="text-base text-white leading-relaxed text-left prose prose-invert prose-base max-w-none"
+                          className={`text-base leading-relaxed text-left prose prose-invert prose-base max-w-none ${theme === 'light' ? 'text-black' : 'text-foreground'}`}
                           dangerouslySetInnerHTML={{ __html: card.content as string }}
                         />
                       </section>
@@ -501,10 +553,16 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                                 href={card.content.github} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
-                                className="group flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-all duration-200 border border-green-500/40 bg-green-500/10 text-green-300 hover:bg-green-500/20 hover:border-green-400/60 rounded-lg py-2"
+                                className={`group flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-all duration-200 border border-green-500/40 bg-green-500/10 hover:bg-green-500/20 hover:border-green-400/60 rounded-lg py-2 ${
+                                  theme === 'light' 
+                                    ? 'text-black hover:text-black' 
+                                    : 'text-green-300 hover:text-green-300'
+                                }`}
                                 aria-label={`Voir le code source de ${project.title} sur GitHub`}
                               >
-                                <Github className="h-4 w-4 transition-transform duration-200 group-hover:rotate-12" />
+                                <Github className={`h-4 w-4 transition-transform duration-200 group-hover:rotate-12 ${
+                                  theme === 'light' ? 'text-black' : 'text-green-300'
+                                }`} />
                                 <span>Code</span>
                               </a>
                             )}
@@ -513,10 +571,16 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                                 href={card.content.live} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
-                                className="group flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-all duration-200 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg shadow-green-500/20 rounded-lg py-2"
+                                className={`group flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-all duration-200 shadow-lg shadow-green-500/20 rounded-lg py-2 ${
+                                  theme === 'light'
+                                    ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white'
+                                    : 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white'
+                                }`}
                                 aria-label={`Voir la démo en ligne de ${project.title}`}
                               >
-                                <Globe className="h-4 w-4 transition-transform duration-200 group-hover:rotate-12" />
+                                <Globe className={`h-4 w-4 transition-transform duration-200 group-hover:rotate-12 ${
+                                  theme === 'light' ? 'text-white' : 'text-white'
+                                }`} />
                                 <span>Démo</span>
                               </a>
                             )}
@@ -525,7 +589,7 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                       </nav>
                     ) : (
                       <div className="flex items-center justify-center h-full">
-                        <p className="text-lg font-medium text-white text-center">
+                        <p className={`text-lg font-medium text-center ${theme === 'light' ? 'text-black' : 'text-foreground'}`}>
                           {card.content as string}
                         </p>
                       </div>
