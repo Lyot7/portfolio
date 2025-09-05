@@ -283,7 +283,7 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
             }
             
             .card.is-description {
-              min-height: 280px;
+              min-height: 100px;
               height: auto;
               max-height: 500px;
               padding: 1.5rem;
@@ -422,6 +422,11 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
           .prose-invert li {
             margin: 0.25rem 0;
           }
+          
+          .prose-invert > *:first-child {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+          }
         `}
       </style>
       
@@ -481,7 +486,7 @@ const ProjectBento: React.FC<ProjectBentoProps> = ({
                         />
                       </div>
                     ) : card.isDescription ? (
-                      <div className="flex items-start justify-start h-full p-4">
+                      <div className="flex items-start justify-start h-full px-4 ">
                         <div 
                           className="text-base text-white leading-relaxed text-left prose prose-invert prose-base max-w-none"
                           dangerouslySetInnerHTML={{ __html: card.content as string }}

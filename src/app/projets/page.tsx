@@ -15,9 +15,9 @@ export default function ProjetsPage() {
   }
 
   return (
-    <section className="min-h-screen pt-24 sm:pt-28 md:pt-32 lg:pt-36 xl:pt-40 pb-16 px-4 sm:px-6 lg:px-8">
+    <section className="min-h-screen pt-24 sm:pt-28 md:pt-32 lg:pt-36 xl:pt-40 pb-16 px-6 sm:px-8 lg:px-16">
       {/* Bentos des projets */}
-      <div className="w-full px-4">
+      <div className="w-full">
         <ProjectBentoGrid projects={projectsData} />
       </div>
     </section>

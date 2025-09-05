@@ -11,8 +11,8 @@ export const projectsData: ProjectCardProps[] = [
   <li>Système de mailing pour demande de devis</li>
   <li>Back office pour la gestion des produits et des stocks</li>
 </ul>`,
-    image: "/api/placeholder/400/300",
-    imageAlt: "Xulinos - Artisan Coutelier - Capture d'écran",
+    image: "/projects/xulinos-home-page.jpg",
+    imageAlt: "Couteau artisanal Xulinos - Lame damas et manche en bois",
     githubUrl: "https://github.com/Lyot7/xulinos",
     liveUrl: "https://xulinos.ly0t.fr",
     technologies: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "WordPress", "Figma"]
